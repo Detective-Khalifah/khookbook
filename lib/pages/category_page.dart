@@ -8,6 +8,7 @@ class CategoryPage extends StatefulWidget {
   CategoryPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
+  static const String id = 'categories';
 
   @override
   _CategoryPageState createState() => _CategoryPageState();
