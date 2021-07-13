@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:khookbook/components/category_card.dart';
 import 'package:khookbook/pages/specific_category_page.dart';
 import 'package:khookbook/services/net_fetcher.dart';
-import 'package:khookbook/utilities/category_model.dart';
+import 'package:khookbook/utilities/category_list_model.dart';
 import 'package:khookbook/utilities/specific_category_args.dart';
 
 class CategoryPage extends StatefulWidget {

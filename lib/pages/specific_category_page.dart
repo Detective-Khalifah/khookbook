@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:khookbook/components/category_card.dart';
 import 'package:khookbook/pages/meal_page.dart';
 import 'package:khookbook/services/net_fetcher.dart';
-import 'package:khookbook/utilities/meal_model.dart';
+import 'package:khookbook/utilities/meals_list_model.dart';
 import 'package:khookbook/utilities/specific_meal_args.dart';
 
 class SpecificCategoryPage extends StatefulWidget {
