@@ -35,14 +35,6 @@ class _SpecificCategoryPageState extends State<SpecificCategoryPage> {
                         category: snapshot.data![index].meal,
                         thumbnail: snapshot.data![index].mealThumbnail,
                       );
-
-                      //   Column(
-                      //   children: [
-                      //     Text(
-                      //         '${snapshot.data![index].id}. ${snapshot.data![index].meal}'),
-                      //     Image.network(snapshot.data![index].mealThumbnail)
-                      //   ],
-                      // );
                     }),
               );
             } else
