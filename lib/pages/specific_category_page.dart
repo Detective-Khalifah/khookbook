@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:khookbook/components/category_card.dart';
 import 'package:khookbook/services/net_fetcher.dart';
 import 'package:khookbook/utilities/meal_model.dart';
-import 'package:khookbook/components/category_card.dart';
 
 class SpecificCategoryPage extends StatefulWidget {
-  late final String category;
+  late final String? category;
   static const String id = 'category';
 
-  SpecificCategoryPage({Key? key, required this.category}) : super(key: key);
+  SpecificCategoryPage({Key? key, this.category}) : super(key: key);
 
   @override
   _SpecificCategoryPageState createState() => _SpecificCategoryPageState();
@@ -60,12 +60,13 @@ class _SpecificCategoryPageState extends State<SpecificCategoryPage> {
   }
 
   Future<List<Meal>> _fetchMeals() async {
-    // Make a network request to 'GET' {@link CategoriesList} data and store the
-    // returned {@link JSON} {@link String} in #jsonStringDat
+    // Make a network request to 'GET' {@link MealsList} data and store the
+    // returned {@link JSON} {@link String} in #specificCategory
     NetworkFetcher fetcher = NetworkFetcher(
-        link: 'https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef');
-
+        link:
+            'https://www.themealdb.com/api/json/v1/1/filter.php?c=${widget.category}');
     var specificCategory = await fetcher.fetchJSONData();
+
     // parse list of categories into {@link @MealsList}
     final parsedData = MealsList.fromJson(specificCategory);
 

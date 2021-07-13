@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:khookbook/components/category_card.dart';
+import 'package:khookbook/pages/specific_category_page.dart';
 import 'package:khookbook/services/net_fetcher.dart';
 import 'package:khookbook/utilities/category_model.dart';
-import 'package:khookbook/components/category_card.dart';
+import 'package:khookbook/utilities/specific_category_args.dart';
 
 class CategoryPage extends StatefulWidget {
   CategoryPage({Key? key, required this.title}) : super(key: key);
@@ -41,6 +43,19 @@ class _CategoryPageState extends State<CategoryPage> {
                         thumbnail: categoriesSnapshot.data![index].thumbnail,
                         description:
                             categoriesSnapshot.data![index].description,
+                        onPress: () {
+                          Navigator.pushNamed(
+                            context,
+                            SpecificCategoryPage.id,
+                            arguments: SpecificCategoryArguments(
+                              categoriesSnapshot.data![index].category
+                                  .toString(),
+                            ),
+                          );
+                        },
+                        onSave: () {
+                          // TODO: Save to Firebase account
+                        },
                       );
                     }),
               );

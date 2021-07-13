@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/pages/meal_page.dart';
 import 'package:khookbook/pages/specific_category_page.dart';
+import 'package:khookbook/utilities/specific_category_args.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,8 +29,18 @@ class MyApp extends StatelessWidget {
       initialRoute: CategoryPage.id,
       routes: {
         CategoryPage.id: (context) => CategoryPage(title: 'Recipe Categories'),
-        SpecificCategoryPage.id: (context) => SpecificCategoryPage(),
         MealPage.id: (context) => MealPage(meal: ''),
+      },
+      onGenerateRoute: (setting) {
+        switch (setting.name) {
+          case SpecificCategoryPage.id:
+            final args = setting.arguments as SpecificCategoryArguments;
+
+            return MaterialPageRoute(builder: (context) {
+              return SpecificCategoryPage(category: args.category);
+            });
+          default:
+        }
       },
     );
   }
