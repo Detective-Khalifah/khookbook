@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'package:khookbook/pages/category_page.dart';
+import 'package:khookbook/pages/meal_page.dart';
+import 'package:khookbook/pages/specific_category_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,9 +23,14 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/categories',
+      routes: {
+        '/categories': (context) => CategoryPage(title: 'Recipe Categories'),
+        '/specific_category': (context) => SpecificCategoryPage(category: ''),
+        '/specific_meal': (context) => MealPage(meal: ''),
+      },
     );
   }
 }
