@@ -44,7 +44,7 @@ class _SpecificCategoryPageState extends State<SpecificCategoryPage> {
                             context,
                             MealPage.id,
                             arguments: SpecificMealArguments(
-                              mealsSnapshot.data![index].meal.toString(),
+                              mealsSnapshot.data![index].id.toString(),
                             ),
                           );
                         },
