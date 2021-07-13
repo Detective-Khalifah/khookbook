@@ -39,6 +39,11 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) {
               return SpecificCategoryPage(category: args.category);
             });
+          case MealPage.id:
+            final args = setting.arguments as SpecificCategoryArguments;
+            return MaterialPageRoute(builder: (context) {
+              return SpecificCategoryPage(category: args.category);
+            });
           default:
         }
       },

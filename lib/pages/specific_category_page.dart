@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:khookbook/components/category_card.dart';
+import 'package:khookbook/pages/meal_page.dart';
 import 'package:khookbook/services/net_fetcher.dart';
 import 'package:khookbook/utilities/meal_model.dart';
+import 'package:khookbook/utilities/specific_meal_args.dart';
 
 class SpecificCategoryPage extends StatefulWidget {
   late final String? category;
@@ -15,26 +17,40 @@ class SpecificCategoryPage extends StatefulWidget {
 
 class _SpecificCategoryPageState extends State<SpecificCategoryPage> {
   late Future<List<Meal>> meals;
-  late List<Widget> mealCards;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('${widget.category}'),
+      ),
       body: SafeArea(
         child: FutureBuilder<List<Meal>>(
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
+          builder: (context, mealsSnapshot) {
+            if (mealsSnapshot.hasData) {
               return Container(
                 color: Colors.orangeAccent.shade100,
                 child: GridView.builder(
-                    itemCount: snapshot.data!.length,
+                    itemCount: mealsSnapshot.data!.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2),
                     itemBuilder: (context, index) {
                       return CategoryCard(
-                        id: snapshot.data![index].id,
-                        category: snapshot.data![index].meal,
-                        thumbnail: snapshot.data![index].mealThumbnail,
+                        id: mealsSnapshot.data![index].id,
+                        category: mealsSnapshot.data![index].meal,
+                        thumbnail: mealsSnapshot.data![index].mealThumbnail,
+                        onPress: () {
+                          Navigator.pushNamed(
+                            context,
+                            MealPage.id,
+                            arguments: SpecificMealArguments(
+                              mealsSnapshot.data![index].meal.toString(),
+                            ),
+                          );
+                        },
+                        onSave: () {
+                          // TODO: Save to Firebase account
+                        },
                       );
                     }),
               );
