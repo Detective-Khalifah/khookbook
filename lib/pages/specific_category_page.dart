@@ -36,7 +36,6 @@ class _SpecificCategoryPageState extends State<SpecificCategoryPage> {
                         crossAxisCount: 2),
                     itemBuilder: (context, index) {
                       return CategoryCard(
-                        id: mealsSnapshot.data![index].id,
                         category: mealsSnapshot.data![index].meal,
                         thumbnail: mealsSnapshot.data![index].mealThumbnail,
                         onPress: () {

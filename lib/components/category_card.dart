@@ -18,6 +18,7 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('ID: $id--Category--$category.\nDescription: $description');
     return GestureDetector(
       onTap: onPress,
       child: Padding(
@@ -34,7 +35,7 @@ class CategoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('$id. $category'),
+              Text(id != null ? '$id. $category' : '$category'),
               Text(
                 description != null ? description! : '',
                 maxLines: 2,
