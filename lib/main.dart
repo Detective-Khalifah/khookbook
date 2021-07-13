@@ -25,11 +25,11 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.orange,
       ),
-      initialRoute: '/categories',
+      initialRoute: CategoryPage.id,
       routes: {
-        '/categories': (context) => CategoryPage(title: 'Recipe Categories'),
-        '/specific_category': (context) => SpecificCategoryPage(category: ''),
-        '/specific_meal': (context) => MealPage(meal: ''),
+        CategoryPage.id: (context) => CategoryPage(title: 'Recipe Categories'),
+        SpecificCategoryPage.id: (context) => SpecificCategoryPage(),
+        MealPage.id: (context) => MealPage(meal: ''),
       },
     );
   }

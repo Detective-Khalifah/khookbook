@@ -5,6 +5,7 @@ import 'package:khookbook/components/category_card.dart';
 
 class SpecificCategoryPage extends StatefulWidget {
   late final String category;
+  static const String id = 'category';
 
   SpecificCategoryPage({Key? key, required this.category}) : super(key: key);
 
