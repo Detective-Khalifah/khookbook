@@ -169,28 +169,9 @@ class _MealPageState extends State<MealPage> {
       else {
         theIngredientThumbnail
             .add('${_ingredients[i]!.trim().replaceAll((r' '), '%20')}');
-        // print('Thumbnail Link(s): ' + theIngredientThumbnail[i]);
         _ingredientList.add('${_ingredients[i]}' + ' (${_measures[i]})');
       }
     }
     return _ingredientList;
   }
-// String parseIngredients(Meal meal) {
-//   String ingredient = '', measure = '';
-//   String ingredients = '';
-//   for (int i = 0; i < 20; i++) {
-//     ingredient = '${join('meal.ingredient', '${i + 1}', meal)}';
-//     measure = '${join('meal.measure', '${i + 1}', meal)}';
-//     ingredients += ingredient + '($measure)';
-//   }
-//   return ingredients;
-// }
-//
-// String join(String prefix, String suffix, Meal theMeal) {
-//   String link = '$prefix' + '$suffix';
-//   theMeal = ('meal.$link') as Meal;
-//   print('Link:: $link');
-//   // print('link as Meal:: ${link as Meal}');
-//   return link;
-// }
 }
