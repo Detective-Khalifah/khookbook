@@ -1,5 +1,5 @@
 class Meal {
-  final String? id, meal, source, ytLink;
+  final String? id, cuisineLocale, meal, source, ytLink;
   String mealThumbnail, instructions;
 
   // 15 String Ingredients
@@ -91,6 +91,7 @@ class Meal {
       required this.instructions,
       required this.meal,
       required this.mealThumbnail,
+      this.cuisineLocale,
       this.source,
       this.ytLink});
 
@@ -100,6 +101,7 @@ class Meal {
       instructions: json['strInstructions'],
       meal: json['strMeal'],
       mealThumbnail: json['strMealThumb'],
+      cuisineLocale: json['strArea'],
       source: json['strSource'],
       ytLink: json['strYoutube'],
 
@@ -151,7 +153,8 @@ class Meal {
 
   String toString() {
     return 'idMeal: $id, strMeal: $meal, strMealThumb: $mealThumbnail, '
-        'strInstructions: $instructions, strSource: $source, strYoutube: $ytLink, '
+        'strArea: $cuisineLocale, strInstructions: $instructions, '
+        'strSource: $source, strYoutube: $ytLink, '
         'strIngredient1: $ingredient1, strIngredient2: $ingredient2, '
         'strIngredient3: $ingredient3, strIngredient4: $ingredient4, '
         'strIngredient5: $ingredient5, strIngredient6: $ingredient6, '
