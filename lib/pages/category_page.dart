@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:khookbook/components/category_card.dart';
+import 'package:khookbook/components/empty_pot.dart';
 import 'package:khookbook/pages/specific_category_page.dart';
 import 'package:khookbook/services/net_fetcher.dart';
 import 'package:khookbook/utilities/category_list_model.dart';
@@ -60,13 +61,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     }),
               );
             } else
-              return Text(
-                'Error!',
-                style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 36,
-                    fontWeight: FontWeight.w900),
-              );
+              return EmptyPot();
           },
           future: categories,
         ),

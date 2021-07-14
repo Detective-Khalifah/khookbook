@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khookbook/components/category_card.dart';
+import 'package:khookbook/components/empty_pot.dart';
 import 'package:khookbook/pages/meal_page.dart';
 import 'package:khookbook/services/net_fetcher.dart';
 import 'package:khookbook/utilities/meals_list_model.dart';
@@ -54,13 +55,7 @@ class _SpecificCategoryPageState extends State<SpecificCategoryPage> {
                     }),
               );
             } else
-              return Text(
-                'Error!',
-                style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 36,
-                    fontWeight: FontWeight.w900),
-              );
+              return EmptyPot();
           },
           future: meals,
         ),
