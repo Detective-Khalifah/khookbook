@@ -30,29 +30,31 @@ class _SpecificCategoryPageState extends State<SpecificCategoryPage> {
           builder: (context, mealsSnapshot) {
             if (mealsSnapshot.hasData) {
               return Container(
-                color: Colors.orangeAccent.shade100,
+                color: Colors.orangeAccent.shade200,
                 child: GridView.builder(
-                    itemCount: mealsSnapshot.data!.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2),
-                    itemBuilder: (context, index) {
-                      return CategoryCard(
-                        category: mealsSnapshot.data![index].meal,
-                        thumbnail: mealsSnapshot.data![index].mealThumbnail,
-                        onPress: () {
-                          Navigator.pushNamed(
-                            context,
-                            MealPage.id,
-                            arguments: SpecificMealArguments(
-                              mealsSnapshot.data![index].id.toString(),
-                            ),
-                          );
-                        },
-                        onSave: () {
-                          // TODO: Save to Firebase account
-                        },
-                      );
-                    }),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: (context, index) {
+                    return CategoryCard(
+                      category: mealsSnapshot.data![index].meal,
+                      thumbnail: mealsSnapshot.data![index].mealThumbnail,
+                      onPress: () {
+                        Navigator.pushNamed(
+                          context,
+                          MealPage.id,
+                          arguments: SpecificMealArguments(
+                            mealsSnapshot.data![index].id.toString(),
+                          ),
+                        );
+                      },
+                      onSave: () {
+                        // TODO: Save to Firebase account
+                      },
+                    );
+                  },
+                  itemCount: mealsSnapshot.data!.length,
+                  padding: EdgeInsets.all(10.0),
+                ),
               );
             } else
               return EmptyPot();

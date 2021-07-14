@@ -32,33 +32,33 @@ class _CategoryPageState extends State<CategoryPage> {
           builder: (context, categoriesSnapshot) {
             if (categoriesSnapshot.hasData) {
               return Container(
-                color: Colors.orangeAccent.shade100,
+                color: Colors.orangeAccent.shade200,
                 child: GridView.builder(
-                    itemCount: categoriesSnapshot.data!.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2),
-                    itemBuilder: (context, index) {
-                      return CategoryCard(
-                        id: categoriesSnapshot.data![index].id,
-                        category: categoriesSnapshot.data![index].category,
-                        thumbnail: categoriesSnapshot.data![index].thumbnail,
-                        description:
-                            categoriesSnapshot.data![index].description,
-                        onPress: () {
-                          Navigator.pushNamed(
-                            context,
-                            SpecificCategoryPage.id,
-                            arguments: SpecificCategoryArguments(
-                              categoriesSnapshot.data![index].category
-                                  .toString(),
-                            ),
-                          );
-                        },
-                        onSave: () {
-                          // TODO: Save to Firebase account
-                        },
-                      );
-                    }),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: (context, index) {
+                    return CategoryCard(
+                      id: categoriesSnapshot.data![index].id,
+                      category: categoriesSnapshot.data![index].category,
+                      thumbnail: categoriesSnapshot.data![index].thumbnail,
+                      description: categoriesSnapshot.data![index].description,
+                      onPress: () {
+                        Navigator.pushNamed(
+                          context,
+                          SpecificCategoryPage.id,
+                          arguments: SpecificCategoryArguments(
+                            categoriesSnapshot.data![index].category.toString(),
+                          ),
+                        );
+                      },
+                      onSave: () {
+                        // TODO: Save to Firebase account
+                      },
+                    );
+                  },
+                  itemCount: categoriesSnapshot.data!.length,
+                  padding: EdgeInsets.all(10.0),
+                ),
               );
             } else
               return EmptyPot();
