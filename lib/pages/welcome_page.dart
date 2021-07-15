@@ -37,7 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
               child: DefaultTextStyle(
                 style: const TextStyle(
                     fontSize: 40.0,
-                    fontFamily: 'Canterbury',
+                    fontFamily: 'Festive',
                     fontWeight: FontWeight.w900,
                     letterSpacing: 2,
                     color: Color(0xFFFFE5C6)),
