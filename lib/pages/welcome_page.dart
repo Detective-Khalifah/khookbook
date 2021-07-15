@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khookbook/components/rounded_button.dart';
+import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/pages/sign_in_page.dart';
 import 'package:khookbook/pages/sign_up_page.dart';
 
@@ -73,6 +74,12 @@ class _WelcomePageState extends State<WelcomePage> {
                 onPressed: () {
                   Navigator.pushNamed(context, SignUpPage.id);
                 }),
+            RoundedButton(
+                colour: Colors.orangeAccent,
+                label: 'Take a Tour',
+                onPressed: () {
+                  Navigator.pushNamed(context, CategoryPage.id);
+                })
           ],
         ),
       ),
