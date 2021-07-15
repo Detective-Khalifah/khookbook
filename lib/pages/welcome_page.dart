@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khookbook/components/rounded_button.dart';
+import 'package:khookbook/pages/sign_up_page.dart';
 
 class WelcomePage extends StatefulWidget {
   static const String id = 'welcome';
@@ -25,7 +26,6 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
         ),
       ),
-      backgroundColor: Color(0xB0FA831D),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -65,7 +65,11 @@ class _WelcomePageState extends State<WelcomePage> {
                 label: 'Login',
                 onPressed: () {}),
             RoundedButton(
-                colour: Colors.deepOrange, label: 'Register', onPressed: () {}),
+                colour: Colors.deepOrange,
+                label: 'Sign Up',
+                onPressed: () {
+                  Navigator.pushNamed(context, SignUpPage.id);
+                }),
           ],
         ),
       ),

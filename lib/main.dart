@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/pages/meal_page.dart';
+import 'package:khookbook/pages/sign_up_page.dart';
 import 'package:khookbook/pages/specific_category_page.dart';
 import 'package:khookbook/pages/welcome_page.dart';
 import 'package:khookbook/utilities/specific_category_args.dart';
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          elevation: 4,
           centerTitle: true,
+          elevation: 4,
         ),
+        scaffoldBackgroundColor: Color(0xB0FA831D),
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
         /*MealPage.id: (context) => MealPage(mealId: '52874'),*/
         // TODO: Remove after 'tasting...'
         CategoryPage.id: (context) => CategoryPage(title: 'Recipe Categories'),
+        SignUpPage.id: (context) => SignUpPage(title: 'Khookbook'),
         WelcomePage.id: (context) => WelcomePage(title: 'Khookbook'),
       },
       onGenerateRoute: (setting) {
