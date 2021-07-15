@@ -13,7 +13,7 @@ class EmptyPot extends StatelessWidget {
           Container(
               child: FadeInImage.assetNetwork(
             // fit: BoxFit.contain,
-            placeholder: '/images/cooking_pot.gif', // Before image load
+            placeholder: 'assets/images/cooking_pot.gif', // Before image load
             image:
                 'https://media1.tenor.com/images/8a1df0caea44830aa0ecf99ac223c747/tenor.gif?itemid=15085886', // After image load
             height: 200,
