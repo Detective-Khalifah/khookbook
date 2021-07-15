@@ -55,7 +55,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         speed: const Duration(milliseconds: 250)),
                   ],
                   displayFullTextOnTap: true,
-                  totalRepeatCount: 5,
+                  repeatForever: true,
                 ),
               ),
             ),
