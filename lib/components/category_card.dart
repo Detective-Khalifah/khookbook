@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:khookbook/utilities/constants.dart';
 
 class CategoryCard extends StatelessWidget {
   final String? id, category, thumbnail, description, owner;
@@ -25,23 +26,10 @@ class CategoryCard extends StatelessWidget {
     Random randomChooser = Random();
     Color selectedColour = Colors.white;
 
-    List<Color> specificColours = [
-      Color(0xFFB2E2ED),
-      Color(0xFFAEC0EC),
-      Color(0xFFABE2D1),
-      Color(0xffA6E8E8),
-      Color(0xff8593FC),
-      Color(0xffF38FA3),
-      Color(0xff6ED1B8),
-      Color(0xff57B4F2),
-      Color(0xffE9A84D),
-      Color(0xff67320B),
-      Color(0xff38497E)
-    ];
     if (id == null && description == null) {
       // specific category list
       randomColourIndex = randomChooser.nextInt(11);
-      selectedColour = specificColours[randomColourIndex];
+      selectedColour = kCardColours[randomColourIndex];
     } else {
       // all categories
       randomColourIndex = randomChooser.nextInt(16);
@@ -52,12 +40,13 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Material(
+        // TODO: Define shape as a vertical rounded rectangle
+        borderRadius: BorderRadius.circular(10),
         // TODO: Generate random for category & random of an array for specific_category
         color: selectedColour,
         elevation: 4,
         shadowColor: Colors.black26,
-        // TODO: Define shape as a vertical rounded rectangle
-        borderRadius: BorderRadius.circular(10),
+        type: MaterialType.card,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,14 +59,14 @@ class CategoryCard extends StatelessWidget {
             ClipRRect(
               child: Container(
                 // TODO: Size appropriately
-                width: 150,
                 height: 150,
+                width: 300,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(thumbnail!),
                   ),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(100),
                 ),
               ),
             ),
