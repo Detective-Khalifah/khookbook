@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/pages/meal_page.dart';
+import 'package:khookbook/pages/sign_in_page.dart';
 import 'package:khookbook/pages/sign_up_page.dart';
 import 'package:khookbook/pages/specific_category_page.dart';
 import 'package:khookbook/pages/welcome_page.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         /*MealPage.id: (context) => MealPage(mealId: '52874'),*/
         // TODO: Remove after 'tasting...'
         CategoryPage.id: (context) => CategoryPage(title: 'Recipe Categories'),
+        SignInPage.id: (context) => SignInPage(title: 'Khookbook'),
         SignUpPage.id: (context) => SignUpPage(title: 'Khookbook'),
         WelcomePage.id: (context) => WelcomePage(title: 'Khookbook'),
       },
