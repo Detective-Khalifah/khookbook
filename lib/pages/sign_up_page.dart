@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khookbook/components/rounded_button.dart';
+import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/utilities/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -16,6 +18,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _auth = FirebaseAuth.instance;
+
+  late String email, passkey;
   bool showSpinner = false;
 
   @override
@@ -53,7 +58,9 @@ class _SignUpPageState extends State<SignUpPage> {
               TextField(
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.emailAddress,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    email = value;
+                  },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your e-mail')),
               SizedBox(
@@ -62,7 +69,9 @@ class _SignUpPageState extends State<SignUpPage> {
               TextField(
                   obscureText: true,
                   textAlign: TextAlign.center,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    passkey = value;
+                  },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your password')),
               SizedBox(
@@ -75,6 +84,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   setState(() {
                     showSpinner = true;
                   });
+
+                  try {
+                    final newUser = await _auth.createUserWithEmailAndPassword(
+                        email: email, password: passkey);
+                    print(email + ' $passkey');
+                    if (newUser != null) {
+                      Navigator.pushNamed(context, CategoryPage.id);
+
+                      setState(() {
+                        showSpinner = false;
+                      });
+                    }
+                  } catch (FANU) {
+                    print(FANU);
+                  }
                 },
               ),
             ],
