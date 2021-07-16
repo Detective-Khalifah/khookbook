@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khookbook/components/rounded_button.dart';
+import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/utilities/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -16,6 +18,10 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final _auth = FirebaseAuth.instance;
+  late User signedInUser;
+  late String userEMail, userPass;
+
   bool showSpinner = false;
 
   @override
@@ -53,7 +59,9 @@ class _SignInPageState extends State<SignInPage> {
               TextField(
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.emailAddress,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    userEMail = value;
+                  },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your e-mail')),
               SizedBox(
@@ -62,7 +70,9 @@ class _SignInPageState extends State<SignInPage> {
               TextField(
                   obscureText: true,
                   textAlign: TextAlign.center,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    userPass = value;
+                  },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your password.')),
               SizedBox(
@@ -75,6 +85,21 @@ class _SignInPageState extends State<SignInPage> {
                     setState(() {
                       showSpinner = true;
                     });
+
+                    try {
+                      final signedInUser =
+                          await _auth.signInWithEmailAndPassword(
+                              email: userEMail, password: userPass);
+                      if (signedInUser != null) {
+                        Navigator.pushNamed(context, CategoryPage.id);
+
+                        setState(() {
+                          showSpinner = false;
+                        });
+                      }
+                    } catch (signInError) {
+                      print(signInError);
+                    }
                   }),
             ],
           ),
