@@ -35,13 +35,15 @@ class _WelcomePageState extends State<WelcomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Hero(
-              tag: 'logo',
-              child: SvgPicture.asset(
-                'assets/images/orion_cooking_pot.svg',
-                height: 200.0,
-                width: 200,
-                semanticsLabel: 'An image of a pot',
+            Flexible(
+              child: Hero(
+                tag: 'cooking_pot',
+                child: SvgPicture.asset(
+                  'assets/images/orion_cooking_pot.svg',
+                  height: 200,
+                  width: 200,
+                  semanticsLabel: 'An image of a pot',
+                ),
               ),
             ),
             SizedBox(
