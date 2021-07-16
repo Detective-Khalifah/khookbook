@@ -87,7 +87,7 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
             RoundedButton(
                 colour: Colors.deepOrangeAccent,
-                label: 'Login',
+                label: 'Sign In',
                 onPressed: () {
                   Navigator.pushNamed(context, SignInPage.id);
                 }),
