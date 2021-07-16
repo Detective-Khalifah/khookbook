@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khookbook/components/rounded_button.dart';
 import 'package:khookbook/utilities/constants.dart';
@@ -36,6 +37,19 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Flexible(
+                child: Hero(
+                  tag: 'cooking_pot',
+                  child: SvgPicture.asset(
+                    'assets/images/orion_cooking_pot.svg',
+                    height: 320.0,
+                    width: 400,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 48.0,
+              ),
               TextField(
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.emailAddress,
