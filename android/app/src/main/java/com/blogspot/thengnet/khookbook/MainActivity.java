@@ -1,4 +1,4 @@
-package com.example.khookbook;
+package com.blogspot.thengnet.khookbook;
 
 import io.flutter.embedding.android.FlutterActivity;
 
