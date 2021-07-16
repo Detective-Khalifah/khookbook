@@ -6,6 +6,7 @@ import 'package:khookbook/components/rounded_button.dart';
 import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/pages/sign_in_page.dart';
 import 'package:khookbook/pages/sign_up_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class WelcomePage extends StatefulWidget {
   static const String id = 'welcome';
@@ -18,6 +19,16 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  // Set default `_initialized` and `_error` state to false
+  bool _initialized = false;
+  bool _error = false;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeFlutterFire();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,5 +107,21 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
       ),
     );
+  }
+
+  // Define an async function to initialize FlutterFire
+  void initializeFlutterFire() async {
+    try {
+      // Wait for Firebase to initialize and set `_initialized` state to true
+      await Firebase.initializeApp();
+      setState(() {
+        _initialized = true;
+      });
+    } catch (e) {
+      // Set `_error` state to true if Firebase initialization fails
+      setState(() {
+        _error = true;
+      });
+    }
   }
 }
