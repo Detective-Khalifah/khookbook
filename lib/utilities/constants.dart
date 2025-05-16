@@ -13,6 +13,7 @@ const List<Color> kCardColours = [
   Color(0xff67320B),
   Color(0xff38497E)
 ];
+// Color selectedColour = kCardColours[randomChooser.nextInt(kCardColours.length)];
 
 const kTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),

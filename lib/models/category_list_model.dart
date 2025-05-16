@@ -12,6 +12,7 @@ class Category {
     );
   }
 
+  @override
   String toString() {
     return 'idCategory: $id, strCategory: $category, strCategoryThumb: $thumbnail, strCategoryDescription: $description';
   }

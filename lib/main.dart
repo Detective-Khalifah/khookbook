@@ -1,66 +1,54 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:khookbook/pages/category_page.dart';
-import 'package:khookbook/pages/meal_page.dart';
 import 'package:khookbook/pages/sign_in_page.dart';
 import 'package:khookbook/pages/sign_up_page.dart';
-import 'package:khookbook/pages/specific_category_page.dart';
 import 'package:khookbook/pages/welcome_page.dart';
-import 'package:khookbook/utilities/specific_category_args.dart';
-import 'package:khookbook/utilities/specific_meal_args.dart';
+import 'package:khookbook/routes.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // initialize FlutterFire
+  runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Khookbooky',
       theme: ThemeData(
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+        useMaterial3: true,
         appBarTheme: AppBarTheme(
           centerTitle: true,
           elevation: 4,
         ),
         scaffoldBackgroundColor: Color(0xB0FA831D),
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.orange,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.deepOrange,
       ),
       initialRoute: WelcomePage.id,
       routes: {
         /*MealPage.id: (context) => MealPage(mealId: '52874'),*/
         // TODO: Remove after 'tasting...'
+        // TODO: Use different appbar title depending on screen size
         CategoryPage.id: (context) => CategoryPage(title: 'Recipe Categories'),
-        SignInPage.id: (context) => SignInPage(title: 'Khookbook'),
-        SignUpPage.id: (context) => SignUpPage(title: 'Khookbook'),
-        WelcomePage.id: (context) => WelcomePage(title: 'Khookbook'),
+        SignInPage.id: (context) =>
+            SignInPage(title: 'Sign In to your account'),
+        SignUpPage.id: (context) => SignUpPage(title: 'Sign Up for an account'),
+        WelcomePage.id: (context) =>
+            WelcomePage(title: 'Welcome to Khookbook!'),
       },
-      onGenerateRoute: (setting) {
-        switch (setting.name) {
-          case SpecificCategoryPage.id:
-            final args = setting.arguments as SpecificCategoryArguments;
-
-            return MaterialPageRoute(builder: (context) {
-              return SpecificCategoryPage(category: args.category);
-            });
-          case MealPage.id:
-            final args = setting.arguments as SpecificMealArguments;
-
-            return MaterialPageRoute(builder: (context) {
-              return MealPage(mealId: args.mealId);
-            });
-          default:
-        }
-      },
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

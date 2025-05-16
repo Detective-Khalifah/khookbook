@@ -6,29 +6,18 @@ import 'package:khookbook/components/rounded_button.dart';
 import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/pages/sign_in_page.dart';
 import 'package:khookbook/pages/sign_up_page.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class WelcomePage extends StatefulWidget {
   static const String id = 'welcome';
   final String title;
 
-  WelcomePage({Key? key, required this.title}) : super(key: key);
+  const WelcomePage({super.key, required this.title});
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  // Set default `_initialized` and `_error` state to false
-  bool _initialized = false;
-  bool _error = false;
-
-  @override
-  void initState() {
-    super.initState();
-    initializeFlutterFire();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,10 +47,12 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
             SizedBox(
+              height: Theme.of(context).textTheme.displayLarge!.fontSize! *
+                  1.2, // headlineLarge also works as long as fontSize is set to 24
               width: 200.0,
               child: DefaultTextStyle(
                 style: const TextStyle(
-                    fontSize: 40.0,
+                    fontSize: 24.0,
                     fontFamily: 'Festive',
                     fontWeight: FontWeight.w900,
                     letterSpacing: 2,
@@ -82,9 +73,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 40.0,
-            ),
+            SizedBox(height: 40.0),
             RoundedButton(
                 colour: Colors.deepOrangeAccent,
                 label: 'Sign In',
@@ -107,21 +96,5 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
       ),
     );
-  }
-
-  // Define an async function to initialize FlutterFire
-  void initializeFlutterFire() async {
-    try {
-      // Wait for Firebase to initialize and set `_initialized` state to true
-      await Firebase.initializeApp();
-      setState(() {
-        _initialized = true;
-      });
-    } catch (e) {
-      // Set `_error` state to true if Firebase initialization fails
-      setState(() {
-        _error = true;
-      });
-    }
   }
 }
