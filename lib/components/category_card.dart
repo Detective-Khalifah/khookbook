@@ -115,6 +115,7 @@ class CategoryCard extends StatelessWidget {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),

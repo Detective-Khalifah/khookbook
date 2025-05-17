@@ -36,6 +36,8 @@ class _MealPageState extends ConsumerState<MealPage> {
   late List<String> theIngredientPortions = [];
   late List<String> theIngredientThumbnail = [];
 
+  final bool isUserRecipe = false;
+
   @override
   Widget build(BuildContext context) {
     final asyncMeal = ref.watch(mealDetailProvider(widget.mealId));
@@ -54,16 +56,15 @@ class _MealPageState extends ConsumerState<MealPage> {
             );
           }
           return Container(
-            height: MediaQuery.of(context).size.height / 1,
+            height: MediaQuery.of(context).size.height,
             color: Colors.orangeAccent.shade100,
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: ListView(
               padding: const EdgeInsets.all(16),
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
               children: [
                 CachedNetworkImage(
-                  imageUrl: meal.thumbnailUrl,
+                  imageUrl: "${meal.thumbnailUrl}/preview",
                   height: 200,
                   fit: BoxFit.cover,
                   placeholder: (context, url) {
@@ -83,7 +84,14 @@ class _MealPageState extends ConsumerState<MealPage> {
                     label: const Text('Watch Video'),
                     onPressed: () => showModalBottomSheet(
                       context: context,
-                      builder: (_) => YoutubePlayer(controller: _ytController!),
+                      builder: (_) => YoutubePlayerBuilder(
+                        player: YoutubePlayer(
+                          controller: _ytController!,
+                        ),
+                        builder: (context, player) =>
+                            Column(children: [player]),
+                      ),
+                      // YoutubePlayer(controller: _ytController!),
                     ),
                   ),
                 const SizedBox(height: 12),
@@ -95,37 +103,69 @@ class _MealPageState extends ConsumerState<MealPage> {
                 const SizedBox(height: 8),
                 // Ingredients list
                 SizedBox(
-                  height: 300,
+                  height: 240,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: meal.ingredients.length,
+                    itemCount: meal.ingredientPairs.length,
                     itemBuilder: (context, index) {
-                      final ingredient = meal.ingredients[index];
-                      final measure = meal.measures[index];
-                      if (ingredient != null &&
-                          measure != null &&
-                          ingredient.isNotEmpty) {
+                      // final ingredientList = meal.ingredientPairs;
+                      return meal.ingredientPairs.map((pair) {
                         return IngredientCard(
-                            ingredient: ingredient,
-                            measure: measure,
-                            thumbnail:
-                                "$kImageBaseUrl${ingredient.trim().replaceAll((r' '), '%20')}.png");
-                      } else {
-                        return SizedBox.shrink();
-                      }
+                          ingredient: pair,
+                          thumbnail:
+                              "$kImageBaseUrl${meal.ingredients[index]?.trim().replaceAll((r' '), '%20')}.png",
+                        );
+                      }).toList()[index];
+                      // final ingredient = meal.ingredients[index];
+                      // final measure = meal.measures[index];
+                      // if (ingredient != null &&
+                      //     measure != null &&
+                      //     ingredient.isNotEmpty) {
+                      //   return IngredientCard(
+                      //       ingredient: ingredient,
+                      //       measure: measure,
+                      //       thumbnail:
+                      //           "$kImageBaseUrl${ingredient.trim().replaceAll((r' '), '%20')}.png");
+                      // } else {
+                      //   return SizedBox.shrink();
+                      // }
                     },
                   ),
                 ),
 
                 const Divider(height: 24),
-                // Markdown instructions
-                // MarkdownWidget(data: meal.instructions),
+                const SizedBox(height: 16),
+                Text(
+                  'Instructions',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 8),
+                if (isUserRecipe)
+                  // Markdown instructions for user recipes:
+                  MarkdownWidget(
+                    data: meal.instructions,
+                    // styleConfig: StyleConfig(
+                    //   pConfig: PConfig(
+                    //     textStyle: Theme.of(context).textTheme.bodyText2,
+                    //   ),
+                    //   listConfig: const ListConfig(),
+                    // ),
+                  )
+                else
+                  // plain text for API recipes:
+                  Text(
+                    meal.instructions,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(height: 1.5),
+                    textAlign: TextAlign.left,
+                  ),
               ],
             ),
           );
         },
         loading: () => EmptyPot(),
-        // const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(child: Text('Error: $e')),
       ),
       // SafeArea(
@@ -192,110 +232,4 @@ class _MealPageState extends ConsumerState<MealPage> {
       // ),
     );
   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     meal = _fetchMeal();
-//   }
-
-//   Future<List<Meal>> _fetchMeal() async {
-//     // Make a network request to 'GET' {@link MealSpecs} data and store the
-//     // returned {@link JSON} {@link String} in #specificMeal
-//     NetworkFetcher fetcher = NetworkFetcher();
-//     var specificMeal = await fetcher.fetchJSONData(
-//         'https://www.themealdb.com/api/json/v1/1/lookup.php?i=${widget.mealId.isEmpty ? 52874 : widget.mealId}');
-
-//     // parse list of categories into {@link @MealSpecs}
-//     final parsedData = MealSpecs.fromJson(specificMeal);
-
-//     // return list of (@link Meal} objects
-//     return parsedData.mealSpecs;
-//   }
-
-//   List<String> parseIngredients(Meal theMeal) {
-//     List<String?> _ingredients = [
-//       theMeal.ingredient1,
-//       theMeal.ingredient2,
-//       theMeal.ingredient3,
-//       theMeal.ingredient4,
-//       theMeal.ingredient5,
-//       theMeal.ingredient6,
-//       theMeal.ingredient7,
-//       theMeal.ingredient8,
-//       theMeal.ingredient9,
-//       theMeal.ingredient10,
-//       theMeal.ingredient11,
-//       theMeal.ingredient12,
-//       theMeal.ingredient13,
-//       theMeal.ingredient14,
-//       theMeal.ingredient15,
-//       theMeal.ingredient16,
-//       theMeal.ingredient17,
-//       theMeal.ingredient18,
-//       theMeal.ingredient19,
-//       theMeal.ingredient20,
-//     ];
-//     List<String?> _measures = [
-//       theMeal.measure1,
-//       theMeal.measure2,
-//       theMeal.measure3,
-//       theMeal.measure4,
-//       theMeal.measure5,
-//       theMeal.measure6,
-//       theMeal.measure7,
-//       theMeal.measure8,
-//       theMeal.measure9,
-//       theMeal.measure10,
-//       theMeal.measure11,
-//       theMeal.measure12,
-//       theMeal.measure13,
-//       theMeal.measure14,
-//       theMeal.measure15,
-//       theMeal.measure16,
-//       theMeal.measure17,
-//       theMeal.measure18,
-//       theMeal.measure19,
-//       theMeal.measure20,
-//     ];
-//     List<String>? _ingredientList = [];
-//     bool _isAnIngredient = true;
-//     for (int i = 0; _isAnIngredient; i++) {
-//       if (_ingredients[i]!.length < 1)
-//         _isAnIngredient = false;
-//       else {
-//         theIngredientThumbnail
-//             .add('${_ingredients[i]!.trim().replaceAll((r' '), '%20')}');
-//         _ingredientList.add('${_ingredients[i]}' + ' (${_measures[i]})');
-//       }
-//     }
-//     return _ingredientList;
-
-  // List<String> parseIngredients(Meal meal) {
-  //   List<String> ingredients = [];
-  //   for (int i = 1; i <= 20; i++) {
-  //     final ingredient = meal['ingredient$i'];
-  //     final measure = meal['measure$i'];
-  //     if (ingredient != null && ingredient.isNotEmpty) {
-  //       ingredients.add('$ingredient ($measure)');
-  //     }
-  //   }
-  //   return ingredients;
-  // }
-
-  // List<String> parseIngredients(Meal meal) {
-  //   List<String> ingredients = [];
-  //   for (int i = 1; i <= 20; i++) {
-  //     final ingredientKey = 'strIngredient$i';
-  //     final measureKey = 'strMeasure$i';
-  //     final ingredient = meal[ingredientKey];
-  //     final measure = meal[measureKey];
-
-  //     if (ingredient != null && ingredient.isNotEmpty) {
-  //       ingredients.add('$ingredient (${measure ?? ''})');
-  //     }
-  //   }
-  //   return ingredients;
-  // }
-  // }
 }

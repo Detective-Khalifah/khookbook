@@ -1,29 +1,24 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:khookbook/components/rounded_button.dart';
-import 'package:khookbook/pages/category_page.dart';
-import 'package:khookbook/pages/sign_in_page.dart';
-import 'package:khookbook/pages/sign_up_page.dart';
+import "package:animated_text_kit/animated_text_kit.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/flutter_svg.dart";
+import "package:google_fonts/google_fonts.dart";
+import "package:khookbook/components/rounded_button.dart";
+import "package:khookbook/pages/home_page.dart";
+import "package:khookbook/pages/sign_in_page.dart";
+import "package:khookbook/pages/sign_up_page.dart";
 
-class WelcomePage extends StatefulWidget {
-  static const String id = 'welcome';
+class WelcomePage extends StatelessWidget {
+  static const String id = "welcome";
   final String title;
 
   const WelcomePage({super.key, required this.title});
 
   @override
-  _WelcomePageState createState() => _WelcomePageState();
-}
-
-class _WelcomePageState extends State<WelcomePage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
+          title,
           style: GoogleFonts.rockSalt(
             color: Color(0xFFFFE5C6),
           ),
@@ -37,12 +32,12 @@ class _WelcomePageState extends State<WelcomePage> {
           children: <Widget>[
             Flexible(
               child: Hero(
-                tag: 'cooking_pot',
+                tag: "cooking_pot",
                 child: SvgPicture.asset(
-                  'assets/images/orion_cooking_pot.svg',
+                  "assets/images/orion_cooking_pot.svg",
                   height: 200,
                   width: 200,
-                  semanticsLabel: 'An image of a pot',
+                  semanticsLabel: "An image of a pot",
                 ),
               ),
             ),
@@ -53,18 +48,18 @@ class _WelcomePageState extends State<WelcomePage> {
               child: DefaultTextStyle(
                 style: const TextStyle(
                     fontSize: 24.0,
-                    fontFamily: 'Festive',
+                    fontFamily: "Festive",
                     fontWeight: FontWeight.w900,
                     letterSpacing: 2,
                     color: Color(0xFFFFE5C6)),
                 child: AnimatedTextKit(
                   animatedTexts: [
-                    TypewriterAnimatedText('Khalifah\'s Cookbook',
-                        cursor: '🍲',
+                    TypewriterAnimatedText("Khalifah's Cookbook",
+                        cursor: "🍲",
                         speed: const Duration(milliseconds: 500),
                         textAlign: TextAlign.center), // "\u{1F372}"
-                    TypewriterAnimatedText('Khookbook!',
-                        cursor: '🍲',
+                    TypewriterAnimatedText("Khookbook!",
+                        cursor: "🍲",
                         textAlign: TextAlign.center,
                         speed: const Duration(milliseconds: 250)),
                   ],
@@ -76,21 +71,21 @@ class _WelcomePageState extends State<WelcomePage> {
             SizedBox(height: 40.0),
             RoundedButton(
                 colour: Colors.deepOrangeAccent,
-                label: 'Sign In',
+                label: "Sign In",
                 onPressed: () {
                   Navigator.pushNamed(context, SignInPage.id);
                 }),
             RoundedButton(
                 colour: Colors.deepOrange,
-                label: 'Sign Up',
+                label: "Sign Up",
                 onPressed: () {
                   Navigator.pushNamed(context, SignUpPage.id);
                 }),
             RoundedButton(
                 colour: Colors.orangeAccent,
-                label: 'Take a Tour',
+                label: "Bite a Taste",
                 onPressed: () {
-                  Navigator.pushNamed(context, CategoryPage.id);
+                  Navigator.pushNamed(context, HomePage.id);
                 })
           ],
         ),

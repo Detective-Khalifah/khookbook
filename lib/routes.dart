@@ -1,6 +1,7 @@
 // routes.dart
 import 'package:flutter/material.dart';
 import 'package:khookbook/pages/category_page.dart';
+import 'package:khookbook/pages/home_page.dart';
 import 'package:khookbook/pages/meal_page.dart';
 import 'package:khookbook/pages/specific_category_page.dart';
 import 'package:khookbook/pages/welcome_page.dart';
@@ -23,6 +24,8 @@ class RouteGenerator {
       case MealPage.id:
         final args = settings.arguments as SpecificMealArguments;
         return MaterialPageRoute(builder: (_) => MealPage(mealId: args.mealId));
+      case HomePage.id:
+        return MaterialPageRoute(builder: (ctx) => HomePage());
       default:
         return _errorRoute();
     }
