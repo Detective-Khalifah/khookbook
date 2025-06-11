@@ -19,9 +19,7 @@ class WelcomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           title,
-          style: GoogleFonts.rockSalt(
-            color: Color(0xFFFFE5C6),
-          ),
+          style: GoogleFonts.rockSalt(color: Color(0xFFFFE5C6)),
         ),
       ),
       body: Padding(
@@ -42,26 +40,32 @@ class WelcomePage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: Theme.of(context).textTheme.displayLarge!.fontSize! *
+              height:
+                  Theme.of(context).textTheme.displayLarge!.fontSize! *
                   1.2, // headlineLarge also works as long as fontSize is set to 24
               width: 200.0,
               child: DefaultTextStyle(
                 style: const TextStyle(
-                    fontSize: 24.0,
-                    fontFamily: "Festive",
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 2,
-                    color: Color(0xFFFFE5C6)),
+                  fontSize: 24.0,
+                  fontFamily: "Festive",
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2,
+                  color: Color(0xFFFFE5C6),
+                ),
                 child: AnimatedTextKit(
                   animatedTexts: [
-                    TypewriterAnimatedText("Khalifah's Cookbook",
-                        cursor: "🍲",
-                        speed: const Duration(milliseconds: 500),
-                        textAlign: TextAlign.center), // "\u{1F372}"
-                    TypewriterAnimatedText("Khookbook!",
-                        cursor: "🍲",
-                        textAlign: TextAlign.center,
-                        speed: const Duration(milliseconds: 250)),
+                    TypewriterAnimatedText(
+                      "Khalifah's Cookbook",
+                      cursor: "🍲",
+                      speed: const Duration(milliseconds: 500),
+                      textAlign: TextAlign.center,
+                    ), // "\u{1F372}"
+                    TypewriterAnimatedText(
+                      "Khookbook!",
+                      cursor: "🍲",
+                      textAlign: TextAlign.center,
+                      speed: const Duration(milliseconds: 250),
+                    ),
                   ],
                   displayFullTextOnTap: true,
                   repeatForever: true,
@@ -70,23 +74,26 @@ class WelcomePage extends StatelessWidget {
             ),
             SizedBox(height: 40.0),
             RoundedButton(
-                colour: Colors.deepOrangeAccent,
-                label: "Sign In",
-                onPressed: () {
-                  Navigator.pushNamed(context, SignInPage.id);
-                }),
+              colour: Colors.deepOrangeAccent,
+              label: "Sign In",
+              onPressed: () {
+                Navigator.pushNamed(context, SignInPage.id);
+              },
+            ),
             RoundedButton(
-                colour: Colors.deepOrange,
-                label: "Sign Up",
-                onPressed: () {
-                  Navigator.pushNamed(context, SignUpPage.id);
-                }),
+              colour: Colors.deepOrange,
+              label: "Sign Up",
+              onPressed: () {
+                Navigator.pushNamed(context, SignUpPage.id);
+              },
+            ),
             RoundedButton(
-                colour: Colors.orangeAccent,
-                label: "Bite a Taste",
-                onPressed: () {
-                  Navigator.pushNamed(context, HomePage.id);
-                })
+              colour: Colors.orangeAccent,
+              label: "Bite a Taste",
+              onPressed: () {
+                Navigator.pushNamed(context, HomePage.id);
+              },
+            ),
           ],
         ),
       ),
