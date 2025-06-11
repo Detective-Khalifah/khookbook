@@ -1,15 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:khookbook/firebase_options.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:khookbook/pages/category_page.dart';
 import 'package:khookbook/pages/sign_in_page.dart';
 import 'package:khookbook/pages/sign_up_page.dart';
 import 'package:khookbook/pages/welcome_page.dart';
 import 'package:khookbook/routes.dart';
+import 'package:khookbook/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // initialize FlutterFire
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); // initialize FlutterFire
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -21,21 +25,8 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Khookbooky',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
-        appBarTheme: AppBarTheme(
-          centerTitle: true,
-          elevation: 4,
-        ),
-        scaffoldBackgroundColor: Color(0xB0FA831D),
-        primarySwatch: Colors.orange,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.deepOrange,
-      ),
+      theme: MaterialTheme(ThemeData.light().textTheme).light(),
+      darkTheme: MaterialTheme(ThemeData.dark().textTheme).dark(),
       initialRoute: WelcomePage.id,
       routes: {
         /*MealPage.id: (context) => MealPage(mealId: '52874'),*/

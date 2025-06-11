@@ -3,7 +3,7 @@ class Meal {
   final String instructions;
   final String name;
   final String thumbnailUrl;
-  final String? area, source, youtubeUrl;
+  final String? area, category, source, tags, youtubeUrl;
 
   // Instead of ingredient1…ingredient20 + measure1…measure20:
   final List<String?> ingredients;
@@ -15,12 +15,12 @@ class Meal {
     required this.name,
     required this.thumbnailUrl,
     this.area,
+    this.category,
     this.source,
+    this.tags,
     this.youtubeUrl,
     required this.ingredients,
     required this.measures,
-    // required String meal,
-    // required String mealThumbnail,
   });
 
   factory Meal.fromJson(Map<String, dynamic> json) {
@@ -35,7 +35,9 @@ class Meal {
       name: json['strMeal'] as String,
       thumbnailUrl: json['strMealThumb'] as String,
       area: json['strArea'] as String?,
+      category: json['strCategory'] as String?,
       source: json['strSource'] as String?,
+      tags: json['strTags'] as String?,
       youtubeUrl: json['strYoutube'] as String?,
       ingredients: ingredients,
       measures: measures,

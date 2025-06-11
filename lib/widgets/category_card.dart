@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:khookbook/utilities/ui_helpers.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter/material.dart";
+import "package:khookbook/utilities/ui_helpers.dart";
 
 class CategoryCard extends StatelessWidget {
   final Function()? onPress;
@@ -21,8 +21,10 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedColour =
-        pickCardColor(id: id, hasDescription: description != null);
+    final selectedColour = pickCardColor(
+      id: id,
+      hasDescription: description != null,
+    );
 
     return InkWell(
       onTap: onPress,
@@ -33,8 +35,8 @@ class CategoryCard extends StatelessWidget {
         shadowColor: Colors.black26,
         child: description == null
             ?
-            // Specific Category
-            Stack(
+              // Specific Category
+              Stack(
                 children: [
                   // Image fills the whole card
                   Positioned.fill(
@@ -60,7 +62,7 @@ class CategoryCard extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        id != null ? '$id. $category' : '$category',
+                        id != null ? "$id. $category" : "$category",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
@@ -83,8 +85,8 @@ class CategoryCard extends StatelessWidget {
                 ],
               )
             :
-            // All Categories
-            Stack(
+              // All Categories
+              Stack(
                 children: [
                   Positioned.fill(
                     child: ClipRRect(
@@ -131,7 +133,7 @@ class CategoryCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            id != null ? '$id. $category' : '$category',
+                            id != null ? "$id. $category" : "$category",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
