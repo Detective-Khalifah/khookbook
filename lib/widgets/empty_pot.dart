@@ -10,17 +10,11 @@ class EmptyPot extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            child: FadeInImage.assetNetwork(
-              fit: BoxFit.contain,
-              placeholder: "assets/images/cooking_pot.gif",
-              // Before image load
-              image:
-                  "https://media1.tenor.com/images/8a1df0caea44830aa0ecf99ac223c747/tenor.gif?itemid=15085886",
-              // After image load
-              height: 200,
-              width: 300,
-            ),
+          Image.asset(
+            "assets/images/cooking_pot.gif",
+            fit: BoxFit.contain,
+            height: 200,
+            width: 300,
           ),
           Text(
             "Pot is empty!",

@@ -1,7 +1,7 @@
 import "package:animated_text_kit/animated_text_kit.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
-import "package:google_fonts/google_fonts.dart";
+// import "package:google_fonts/google_fonts.dart";
 import "package:khookbook/widgets/rounded_button.dart";
 import "package:khookbook/pages/home_page.dart";
 import "package:khookbook/pages/sign_in_page.dart";
@@ -19,7 +19,8 @@ class WelcomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           title,
-          style: GoogleFonts.rockSalt(color: Color(0xFFFFE5C6)),
+          // style: GoogleFonts.rockSalt(color: Color(0xFFFFE5C6)),
+          style: TextStyle(color: Color(0xFFFFE5C6), fontFamily: "RockSalt"),
         ),
       ),
       body: Padding(

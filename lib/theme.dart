@@ -376,6 +376,39 @@ class MaterialTheme {
           ? kDarkMedSurface
           : kLightHighSurface,
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: colorScheme.surfaceContainer,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: colorScheme.outline),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: colorScheme.outline),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: colorScheme.primary, width: 2),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+    ),
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        textStyle: MaterialStateProperty.resolveWith<TextStyle?>((states) {
+          if (states.contains(MaterialState.selected)) {
+            return textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold);
+          }
+          return textTheme.bodyMedium;
+        }),
+        backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+          if (states.contains(MaterialState.selected)) {
+            return colorScheme.primaryContainer;
+          }
+          return colorScheme.surface;
+        }),
+      ),
+    ),
   );
 
   List<ExtendedColor> get extendedColors => [];

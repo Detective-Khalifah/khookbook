@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   static const List<Widget> _pages = <Widget>[
-    CategoryPage(title: "Categories"),
+    CategoryPage(),
     MyRecipesPage(), // to be implemented
     ProfilePage(), // to be implemented
     SettingsPage(), // to be implemented
@@ -60,14 +60,8 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.bookmark),
             label: "My Recipes",
           ),
-          NavigationDestination(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.menu),
-            label: "Settings",
-          ),
+          NavigationDestination(icon: Icon(Icons.person), label: "Profile"),
+          NavigationDestination(icon: Icon(Icons.menu), label: "Settings"),
         ],
       ),
     );
