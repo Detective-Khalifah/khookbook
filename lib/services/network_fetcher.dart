@@ -1,16 +1,6 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-class NetworkResult<T> {
-  final T? data;
-  final String? error;
-
-  NetworkResult.success(this.data) : error = null;
-  NetworkResult.error(this.error) : data = null;
-
-  bool get isSuccess => data != null;
-  bool get isError => error != null;
-}
+import "dart:convert";
+import "package:http/http.dart" as http;
+import "package:khookbook/models/network_result.dart";
 
 class NetworkFetcher {
   Future<NetworkResult<Map<String, dynamic>>> fetchJSONData(String link) async {
@@ -23,11 +13,11 @@ class NetworkFetcher {
         );
       } else {
         return NetworkResult.error(
-          'Failed to load data: ${response.statusCode}',
+          "Failed to load data: ${response.statusCode}",
         );
       }
     } catch (e) {
-      return NetworkResult.error('Network error: $e');
+      return NetworkResult.error("Network error: $e");
     }
   }
 }

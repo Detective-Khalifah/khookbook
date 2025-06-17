@@ -12,7 +12,7 @@ class RegularUser {
   final String? photoUrl;
   final UserRole role;
   final String? bio;
-  final List<String>? favoriteCategories; // TODO: Convert to enum
+  final List<String>? favourites;
   final Timestamp createdAt;
 
   RegularUser({
@@ -25,7 +25,7 @@ class RegularUser {
     this.photoUrl,
     this.role = UserRole.regular,
     this.bio,
-    this.favoriteCategories,
+    this.favourites,
     Timestamp? createdAt,
   }) : createdAt = createdAt ?? Timestamp.now();
 
@@ -44,7 +44,7 @@ class RegularUser {
       photoUrl: data["photo_url"],
       role: UserRole.values.byName(data["role"]),
       bio: data["bio"],
-      favoriteCategories: List<String>.from(data["favoriteCategories"]),
+      favourites: List<String>.from(data["favoriteCategories"]),
       createdAt: (data["createdAt"] as Timestamp),
     );
   }
@@ -59,7 +59,7 @@ class RegularUser {
       "photoUrl": photoUrl,
       "role": role.name,
       "bio": bio,
-      "favoriteCategories": favoriteCategories,
+      "favoriteCategories": favourites,
       "createdAt": createdAt,
     };
   }
@@ -76,13 +76,13 @@ class ChefUser {
   final UserRole role;
   final String? bio;
   final List<String>? specialties; // TODO: Conver to enum
-  final List<String>? favoriteCategories;
+  final List<String>? favourites;
   final bool isVerified;
   final Timestamp createdAt;
 
   ChefUser({
     required this.uid,
-    this.favoriteCategories,
+    this.favourites,
     required this.firstName,
     this.middleName,
     required this.lastName,
@@ -114,7 +114,7 @@ class ChefUser {
       specialties: data["specialties"] != null
           ? List<String>.from(data["specialties"])
           : null,
-      favoriteCategories: List<String>.from(data["favoriteCategories"]),
+      favourites: List<String>.from(data["favoriteCategories"]),
       isVerified: data["is_verified"] ?? false,
       createdAt: (data["createdAt"] as Timestamp),
     );
@@ -131,7 +131,7 @@ class ChefUser {
       "role": role.name,
       "bio": bio,
       "specialties": specialties,
-      "favoriteCategories": favoriteCategories,
+      "favoriteCategories": favourites,
       "is_verified": isVerified,
       "createdAt": createdAt,
     };

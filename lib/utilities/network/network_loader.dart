@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import "package:flutter/material.dart";
+import "package:connectivity_plus/connectivity_plus.dart";
+import "package:khookbook/models/network_result.dart";
 
 /// Executes an asynchronous [loader] function while displaying a loading indicator.
 ///
@@ -13,11 +14,11 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 /// Upon successful completion of the [loader], the loading dialog is dismissed,
 /// and the [onSuccess] callback is invoked with the result.
 ///
-/// If an error occurs during the [loader]'s execution, the loading dialog is
+/// If an error occurs during the [loader]"s execution, the loading dialog is
 /// dismissed, the [onError] callback is invoked with the error, and a `SnackBar`
 /// displaying the error message is shown.
 ///
-/// The [context] is used to show/hide dialogs and SnackBars. It's crucial
+/// The [context] is used to show/hide dialogs and SnackBars. It"s crucial
 /// that the widget associated with this [context] remains mounted during the
 /// asynchronous operations. Checks for `context.mounted` are included to prevent
 /// errors if the widget is disposed.
@@ -108,7 +109,114 @@ Future<T?> executeNetworkOperation<T>({
 /// Specialized version of executeNetworkOperation that handles TheMealDB API calls
 /// with proper caching behavior. When offline, it will attempt to load from cache
 /// first before showing any network error messages.
-Future<T> executeMealDBOperation<T>({
+Future<NetworkResult<T>> fetchMealDBWithCache<T>({
+  required BuildContext context,
+  required Future<T> Function() loader,
+  required Future<T?> Function() cacheLoader,
+  void Function(NetworkResult<T> result)? onComplete,
+  String? successMessage,
+  String? loadingText,
+}) async {
+  final connectivityResult = await Connectivity().checkConnectivity();
+
+  // Try cache first if offline
+  if (connectivityResult.contains(ConnectivityResult.none)) {
+    try {
+      final cachedResult = await cacheLoader();
+      if (cachedResult != null) {
+        final result = NetworkResult<T>.offline(cachedResult);
+        if (onComplete != null) onComplete(result);
+        return result;
+      }
+    } catch (e) {
+      debugPrint("Cache error: $e");
+    }
+
+    // Only show no internet message if we don"t have cached data
+    if (context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("No internet connection")));
+    }
+    return NetworkResult.error(
+      "No internet connection and no cached data available",
+    );
+  }
+
+  // Show loading dialog
+  bool dialogShowing = true;
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator.adaptive(),
+            if (loadingText != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  loadingText,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+          ],
+        ),
+      ),
+    ),
+  ).then((_) => dialogShowing = false);
+
+  try {
+    final data = await loader();
+    if (dialogShowing) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+
+    if (successMessage != null && context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(successMessage)));
+    }
+
+    final result = NetworkResult<T>.success(data);
+    if (onComplete != null) onComplete(result);
+    return result;
+  } catch (error) {
+    if (context.mounted && dialogShowing) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+
+    // Try cache as fallback on network error
+    try {
+      final cachedResult = await cacheLoader();
+      if (cachedResult != null) {
+        final result = NetworkResult<T>.offline(cachedResult);
+        if (onComplete != null) onComplete(result);
+        return result;
+      }
+    } catch (e) {
+      debugPrint("Cache error: $e");
+    }
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
+    }
+    return NetworkResult.error(error.toString());
+  }
+}
+
+/// Specialized version of executeNetworkOperation that handles TheMealDB API calls
+/// with proper caching behavior. When offline, it will attempt to load from cache
+/// first before showing any network error messages.
+/// @deprecated Use `executeMealDBOperation` instead.
+@Deprecated(
+  "Use executeMealDBOperation instead. This version is deprecated and may be removed in future versions.",
+)
+Future<T> deprecatedExecuteMealDBOperation<T>({
   required BuildContext context,
   required Future<T> Function() loader,
   required Future<T?> Function() cacheLoader,
@@ -128,10 +236,10 @@ Future<T> executeMealDBOperation<T>({
         return cachedResult;
       }
     } catch (e) {
-      debugPrint('Cache error: $e');
+      debugPrint("Cache error: $e");
     }
 
-    // Only show no internet message if we don't have cached data
+    // Only show no internet message if we don"t have cached data
     if (onError != null) {
       onError("No internet connection and no cached data available");
     }
@@ -202,7 +310,7 @@ Future<T> executeMealDBOperation<T>({
         return cachedResult;
       }
     } catch (e) {
-      debugPrint('Cache error: $e');
+      debugPrint("Cache error: $e");
     }
 
     if (onError != null) {
