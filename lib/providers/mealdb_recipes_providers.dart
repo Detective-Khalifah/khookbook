@@ -3,7 +3,7 @@ import "package:flutter/foundation.dart" show debugPrint;
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:hive_ce_flutter/hive_flutter.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:khookbook/data/recipes_repository.dart";
+import "package:khookbook/data/mealdb_recipes_repository.dart";
 import "package:khookbook/models/cache/mealdb_category_cache_model.dart"
     show MealDBCategoryCache;
 import "package:khookbook/models/cache/mealdb_category_meals_cache_model.dart"
@@ -29,22 +29,8 @@ final recipesRepositoryProvider = Provider<RecipesRepository>((ref) {
   final categoriesBox = Hive.isBoxOpen("mealdb_categories")
       ? Hive.box<MealDBCategoryCache>("mealdb_categories")
       : throw HiveError("Box \"mealdb_categories\" is not open");
-  return NetworkRecipesRepository(mealdbBox, categoryMealsBox, categoriesBox);
+  return MealDBRecipesRepository(mealdbBox, categoryMealsBox, categoriesBox);
 });
-
-// final recipesNotifierProvider =
-//     StateNotifierProvider<RecipesNotifier, RecipesRepository>((ref) {
-//       final mealdbBox = !Hive.isBoxOpen("mealdb_meals")
-//           ? Hive.box<MealDBMealCache>("mealdb_meals")
-//           : throw HiveError("Box \"mealdb_recipes\" is not open");
-//       final categoryMealsBox = !Hive.isBoxOpen("mealdb_specific_categories")
-//           ? Hive.box<MealDBCategoryMealsCache>("mealdb_specific_categories")
-//           : throw HiveError("Box \"mealdb_specific_categories\" is not open");
-//       final categoriesBox = !Hive.isBoxOpen("mealdb_categories")
-//           ? Hive.box<MealDBCategoryCache>("mealdb_categories")
-//           : throw HiveError("Box \"mealdb_categories\" is not open");
-//       return RecipesNotifier(mealdbBox, categoryMealsBox, categoriesBox);
-//     });
 
 class RecipesNotifier extends StateNotifier<RecipesRepository> {
   RecipesNotifier(
@@ -52,7 +38,7 @@ class RecipesNotifier extends StateNotifier<RecipesRepository> {
     Box<MealDBCategoryMealsCache> categoryMealsBox,
     Box<MealDBCategoryCache> categoriesBox,
   ) : super(
-        NetworkRecipesRepository(mealdbBox, categoryMealsBox, categoriesBox),
+        MealDBRecipesRepository(mealdbBox, categoryMealsBox, categoriesBox),
       );
 
   Future<List<Category>> fetchCategories(BuildContext context) async {
@@ -98,7 +84,6 @@ class RecipesNotifier extends StateNotifier<RecipesRepository> {
   }
 }
 
-// Update provider to handle BuildContext properly
 final categoriesProvider = FutureProvider.autoDispose
     .family<List<Category>, BuildContext>((ref, context) async {
       final repository = ref.watch(recipesRepositoryProvider);

@@ -147,16 +147,6 @@ class CategoryCard extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // Optional save icon
-                  if (onSave != null)
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: const Icon(Icons.bookmark_border),
-                        onPressed: onSave,
-                      ),
-                    ),
                 ],
               ),
       ),

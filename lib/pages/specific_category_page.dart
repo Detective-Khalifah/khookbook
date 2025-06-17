@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:khookbook/widgets/category_card.dart";
 import "package:khookbook/pages/meal_page.dart";
-import "package:khookbook/providers/recipes_providers.dart";
+import "package:khookbook/providers/mealdb_recipes_providers.dart";
 import "package:khookbook/utilities/specific_meal_args.dart";
 import "package:khookbook/utilities/network/network_loader.dart";
 

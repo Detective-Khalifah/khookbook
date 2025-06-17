@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 // import "package:go_router/go_router.dart"; // or just Navigator
 import "package:khookbook/pages/category_page.dart";
+import "package:khookbook/pages/favourites_page.dart";
 import "package:khookbook/pages/my_recipes_page.dart";
 import "package:khookbook/pages/profile_page.dart";
 import "package:khookbook/pages/settings_page.dart";
@@ -17,9 +18,9 @@ class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   static const List<Widget> _pages = <Widget>[
     CategoryPage(),
+    FavouritesPage(), // to be implemented
     MyRecipesPage(), // to be implemented
     ProfilePage(), // to be implemented
-    SettingsPage(), // to be implemented
   ];
 
   int _selectedIndex = 0;
@@ -57,11 +58,14 @@ class _HomePageState extends State<HomePage> {
             label: "Categories",
           ),
           NavigationDestination(
-            icon: Icon(Icons.bookmark),
+            icon: Icon(Icons.favorite),
+            label: "Favourites",
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.food_bank),
             label: "My Recipes",
           ),
-          NavigationDestination(icon: Icon(Icons.person), label: "Profile"),
-          NavigationDestination(icon: Icon(Icons.menu), label: "Settings"),
+          NavigationDestination(icon: Icon(Icons.menu), label: "Menu"),
         ],
       ),
     );

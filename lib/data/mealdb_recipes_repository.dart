@@ -3,31 +3,34 @@ import "package:hive_ce_flutter/hive_flutter.dart" show Box;
 import "package:khookbook/models/cache/mealdb_category_cache_model.dart";
 import "package:khookbook/models/cache/mealdb_category_meals_cache_model.dart";
 import "package:khookbook/models/cache/mealdb_meal_cache_model.dart";
-import "package:khookbook/services/net_fetcher.dart";
+import "package:khookbook/services/network_fetcher.dart";
 import "package:khookbook/models/category_list_model.dart";
 import "package:khookbook/models/meals_list_model.dart";
 import "package:khookbook/models/meal_model.dart";
 import "package:khookbook/utilities/network/network_loader.dart";
 
-// Abstract class defining the contract for a recipes repository.
-// This allows for different implementations (e.g., network-only, network-with-cache).
+/// Abstract class defining the contract for a recipes repository.
+/// This allows for different implementations (e.g., network-only, network-with-cache).
 abstract class RecipesRepository {
-  // Fetches a list of all meal categories.
+  /// Fetches a list of all meal categories.
   Future<List<Category>> fetchAllCategories(BuildContext context);
-  // Fetches a list of meals belonging to a specific category.
+
+  /// Fetches a list of meals belonging to a specific [Category].
   Future<List<CategoryMeals>> fetchMealsByCategory(
     BuildContext context,
     String category,
   );
-  // Fetches the details of a specific meal by its ID.
+
+  /// Fetches the details of a specific [Meal] by its ID.
   Future<Meal> fetchMealById(BuildContext context, String id);
 }
 
-// Implementation of [RecipesRepository] that fetches data from the network
-// and utilizes a local cache ([Hive]) to store and retrieve meal details.
-class NetworkRecipesRepository implements RecipesRepository {
+/// Implementation of [RecipesRepository] that fetches data from the network
+/// and utilizes a local cache ([Hive]) to store and retrieve meal details.
+class MealDBRecipesRepository implements RecipesRepository {
   // Service for making network requests.
   final _fetcher = NetworkFetcher();
+
   // Hive box for caching meal data.
   final Box<MealDBMealCache> _mealBox;
   final Box<MealDBCategoryMealsCache> _categoryMealsBox;
@@ -38,7 +41,7 @@ class NetworkRecipesRepository implements RecipesRepository {
   static const String categoriesKey = "all_categories";
   static const String categoryMealsPrefix = "category_meals_";
 
-  NetworkRecipesRepository(
+  MealDBRecipesRepository(
     this._mealBox,
     this._categoryMealsBox,
     this._categoriesBox,

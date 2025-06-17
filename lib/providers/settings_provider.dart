@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final settingsProvider = StateNotifierProvider<SettingsNotifier, AppSettings>((
   ref,
@@ -41,18 +40,18 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
   }
 
   Future<void> _loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    state = AppSettings(
-      notificationsEnabled: prefs.getBool('notifications_enabled') ?? true,
-      emailNotifications: prefs.getBool('email_notifications') ?? true,
-      language: prefs.getString('language') ?? 'English',
-      autoPlayVideos: prefs.getBool('auto_play_videos') ?? true,
-    );
+    // final prefs = await SharedPreferences.getInstance();
+    // state = AppSettings(
+    //   notificationsEnabled: prefs.getBool('notifications_enabled') ?? true,
+    //   emailNotifications: prefs.getBool('email_notifications') ?? true,
+    //   language: prefs.getString('language') ?? 'English',
+    //   autoPlayVideos: prefs.getBool('auto_play_videos') ?? true,
+    // );
   }
 
   Future<void> toggleNotifications(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('notifications_enabled', value);
-    state = state.copyWith(notificationsEnabled: value);
+    // final prefs = await SharedPreferences.getInstance();
+    // await prefs.setBool('notifications_enabled', value);
+    // state = state.copyWith(notificationsEnabled: value);
   }
 }

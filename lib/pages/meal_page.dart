@@ -1,7 +1,7 @@
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:khookbook/providers/recipes_providers.dart";
+import "package:khookbook/providers/mealdb_recipes_providers.dart";
 import "package:khookbook/models/meal_model.dart";
 import "package:khookbook/widgets/ingredient_card.dart";
 import "package:khookbook/widgets/youtube_player.dart";

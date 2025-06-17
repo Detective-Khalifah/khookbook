@@ -5,7 +5,6 @@ import "package:khookbook/widgets/rounded_button.dart";
 import "package:khookbook/pages/category_page.dart";
 import "package:khookbook/utilities/constants.dart";
 import "package:khookbook/utilities/validators.dart";
-import "package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:khookbook/providers/auth_provider.dart";
 
@@ -71,8 +70,6 @@ class SignInPage extends HookConsumerWidget {
               ),
             ),
             SizedBox(height: 24.0),
-            if (false)
-              Text("Error message", style: TextStyle(color: Colors.red)),
             RoundedButton(
               colour: Colors.deepOrangeAccent,
               label: "Sign in",

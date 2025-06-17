@@ -1,83 +1,139 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
 
 enum UserRole { regular, chef }
 
-class AppUser {
+class RegularUser {
   final String uid;
-  final String email;
-  final String? displayName;
-  final String? photoUrl;
-  final String? bio;
-  final DateTime createdAt;
-  final List<String> favoriteCategories;
-  final UserRole role;
-  // Chef-specific fields
-  final String? firstName;
+  final String firstName;
   final String? middleName;
-  final String? lastName;
-  final String? chefBio;
-  final List<String>? specialties;
-  final bool isVerified;
+  final String lastName;
+  final String email;
+  final String displayName;
+  final String? photoUrl;
+  final UserRole role;
+  final String? bio;
+  final List<String>? favoriteCategories; // TODO: Convert to enum
+  final Timestamp createdAt;
 
-  AppUser({
+  RegularUser({
     required this.uid,
-    required this.email,
-    this.displayName,
-    this.photoUrl,
-    this.bio,
-    required this.createdAt,
-    required this.favoriteCategories,
-    this.role = UserRole.regular,
-    this.firstName,
+    required this.firstName,
     this.middleName,
-    this.lastName,
-    this.chefBio,
-    this.specialties,
-    this.isVerified = false,
-  });
+    required this.lastName,
+    required this.email,
+    required this.displayName,
+    this.photoUrl,
+    this.role = UserRole.regular,
+    this.bio,
+    this.favoriteCategories,
+    Timestamp? createdAt,
+  }) : createdAt = createdAt ?? Timestamp.now();
 
-  factory AppUser.fromFirestore(
+  factory RegularUser.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final data = snapshot.data()!;
-    return AppUser(
+    return RegularUser(
       uid: snapshot.id,
-      email: data['email'],
-      displayName: data['displayName'],
-      photoUrl: data['photoUrl'],
-      bio: data['bio'],
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      favoriteCategories: List<String>.from(data['favoriteCategories']),
-      role: UserRole.values.byName(data['role'] ?? 'regular'),
-      firstName: data['firstName'],
-      middleName: data['middleName'],
-      lastName: data['lastName'],
-      chefBio: data['chefBio'],
-      specialties: data['specialties'] != null
-          ? List<String>.from(data['specialties'])
-          : null,
-      isVerified: data['isVerified'] ?? false,
+      firstName: data["first_name"],
+      middleName: data["middle_name"],
+      lastName: data["last_name"],
+      email: data["email"],
+      displayName: data["display_name"],
+      photoUrl: data["photo_url"],
+      role: UserRole.values.byName(data["role"]),
+      bio: data["bio"],
+      favoriteCategories: List<String>.from(data["favoriteCategories"]),
+      createdAt: (data["createdAt"] as Timestamp),
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'email': email,
-      'displayName': displayName,
-      'photoUrl': photoUrl,
-      'bio': bio,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'favoriteCategories': favoriteCategories,
-      'role': role.name,
-      if (role == UserRole.chef) ...{
-        'firstName': firstName,
-        'middleName': middleName,
-        'lastName': lastName,
-        'chefBio': chefBio,
-        'specialties': specialties,
-      },
-      'isVerified': isVerified,
+      "first_name": firstName,
+      "middle_name": middleName,
+      "last_name": lastName,
+      "email": email,
+      "displayName": displayName,
+      "photoUrl": photoUrl,
+      "role": role.name,
+      "bio": bio,
+      "favoriteCategories": favoriteCategories,
+      "createdAt": createdAt,
+    };
+  }
+}
+
+class ChefUser {
+  final String uid;
+  final String firstName;
+  final String? middleName;
+  final String lastName;
+  final String email;
+  final String displayName;
+  final String? photoUrl;
+  final UserRole role;
+  final String? bio;
+  final List<String>? specialties; // TODO: Conver to enum
+  final List<String>? favoriteCategories;
+  final bool isVerified;
+  final Timestamp createdAt;
+
+  ChefUser({
+    required this.uid,
+    this.favoriteCategories,
+    required this.firstName,
+    this.middleName,
+    required this.lastName,
+    required this.email,
+    required this.displayName,
+    this.photoUrl,
+    this.role = UserRole.chef,
+    this.bio,
+    this.specialties,
+    this.isVerified = false,
+    Timestamp? createdAt,
+  }) : createdAt = createdAt ?? Timestamp.now();
+
+  factory ChefUser.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions options,
+  ) {
+    final data = snapshot.data()!;
+    return ChefUser(
+      uid: snapshot.id,
+      firstName: data["first_name"],
+      middleName: data["middle_name"],
+      lastName: data["last_name"],
+      email: data["email"],
+      displayName: data["display_name"],
+      photoUrl: data["photo_url"],
+      role: UserRole.values.byName(data["role"]),
+      bio: data["bio"],
+      specialties: data["specialties"] != null
+          ? List<String>.from(data["specialties"])
+          : null,
+      favoriteCategories: List<String>.from(data["favoriteCategories"]),
+      isVerified: data["is_verified"] ?? false,
+      createdAt: (data["createdAt"] as Timestamp),
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      "first_name": firstName,
+      "middle_name": middleName,
+      "last_name": lastName,
+      "email": email,
+      "displayName": displayName,
+      "photoUrl": photoUrl,
+      "role": role.name,
+      "bio": bio,
+      "specialties": specialties,
+      "favoriteCategories": favoriteCategories,
+      "is_verified": isVerified,
+      "createdAt": createdAt,
     };
   }
 }
