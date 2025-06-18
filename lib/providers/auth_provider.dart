@@ -56,4 +56,51 @@ class AuthNotifier extends StateNotifier<User?> {
       loader: () => FirebaseAuth.instance.signOut(),
     );
   }
+
+  Future<void> sendVerificationEmail(BuildContext context) async {
+    await executeNetworkOperation(
+      context: context,
+      loadingText: "Sending verification email...",
+      successMessage: "Verification email sent",
+      loader: () => FirebaseAuth.instance.currentUser!.sendEmailVerification(),
+    );
+  }
+
+  Future<void> changePassword(
+    BuildContext context, {
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    await executeNetworkOperation(
+      context: context,
+      loadingText: "Changing password...",
+      successMessage: "Password changed successfully",
+      loader: () async {
+        final user = FirebaseAuth.instance.currentUser!;
+        final credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: currentPassword,
+        );
+        await user.reauthenticateWithCredential(credential);
+        await user.updatePassword(newPassword);
+      },
+    );
+  }
+
+  Future<void> deleteAccount(BuildContext context, String password) async {
+    await executeNetworkOperation(
+      context: context,
+      loadingText: "Deleting account...",
+      successMessage: "Account deleted successfully",
+      loader: () async {
+        final user = FirebaseAuth.instance.currentUser!;
+        final credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: password,
+        );
+        await user.reauthenticateWithCredential(credential);
+        await user.delete();
+      },
+    );
+  }
 }

@@ -116,6 +116,8 @@ const Color kM3DarkSurfaceContainerHighest = Color(0xFF3E3329);
 
 // Brand Colors
 const Color kPrimaryOrange = Color(0xFFFF6B00); // Vibrant orange
+const Color kLightOrange = Color(0xFFFFAB40); // Light orange
+const Color kDarkOrange = Color(0xFFFF9800); // Darker orange
 const Color kSecondaryBrown = Color(0xFF8B4513); // Saddle brown
 const Color kAccentYellow = Color(0xFFFFB800); // Golden yellow
 const Color kNeutralCream = Color(0xFFFFF3E0); // Warm cream

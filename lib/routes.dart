@@ -1,4 +1,7 @@
 import "package:flutter/material.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:khookbook/middleware/admin_guard.dart";
+import "package:khookbook/pages/admin_page.dart";
 import "package:khookbook/pages/category_page.dart";
 import "package:khookbook/pages/home_page.dart";
 import "package:khookbook/pages/meal_page.dart";
@@ -10,8 +13,27 @@ import "package:khookbook/utilities/specific_category_args.dart";
 import "package:khookbook/utilities/specific_meal_args.dart";
 
 class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
+  static Route<dynamic> generateRoute(RouteSettings settings, WidgetRef ref) {
     switch (settings.name) {
+      case AdminPage.id:
+        return MaterialPageRoute(
+          builder: (context) => FutureBuilder<bool>(
+            future: AdminGuard.canActivate(context, ref),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              if (snapshot.data == true) {
+                return const AdminPage();
+              }
+
+              return AdminGuard.onUnauthorized(context);
+            },
+          ),
+        );
       case WelcomePage.id:
         return MaterialPageRoute(
           builder: (_) => WelcomePage(title: "Welcome to Khookbook!"),
@@ -46,8 +68,8 @@ class RouteGenerator {
     return MaterialPageRoute(
       builder: (_) {
         return Scaffold(
-          appBar: AppBar(title: Text("Error")),
-          body: Center(child: Text("Invalid route")),
+          appBar: AppBar(title: const Text("Error")),
+          body: const Center(child: Text("Invalid route")),
         );
       },
     );

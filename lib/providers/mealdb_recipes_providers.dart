@@ -29,7 +29,12 @@ final recipesRepositoryProvider = Provider<RecipesRepository>((ref) {
   final categoriesBox = Hive.isBoxOpen("mealdb_categories")
       ? Hive.box<MealDBCategoryCache>("mealdb_categories")
       : throw HiveError("Box \"mealdb_categories\" is not open");
-  return MealDBRecipesRepository(mealdbBox, categoryMealsBox, categoriesBox);
+  return MealDBRecipesRepository(
+    mealdbBox,
+    categoryMealsBox,
+    categoriesBox,
+    ref,
+  );
 });
 
 class RecipesNotifier extends StateNotifier<RecipesRepository> {
@@ -38,7 +43,12 @@ class RecipesNotifier extends StateNotifier<RecipesRepository> {
     Box<MealDBCategoryMealsCache> categoryMealsBox,
     Box<MealDBCategoryCache> categoriesBox,
   ) : super(
-        MealDBRecipesRepository(mealdbBox, categoryMealsBox, categoriesBox),
+        MealDBRecipesRepository(
+          mealdbBox,
+          categoryMealsBox,
+          categoriesBox,
+          null,
+        ),
       );
 
   Future<List<Category>> fetchCategories(BuildContext context) async {

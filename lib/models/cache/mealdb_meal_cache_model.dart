@@ -2,47 +2,31 @@ import "package:hive_ce_flutter/hive_flutter.dart";
 
 import "package:khookbook/models/meal_model.dart";
 
-part "mealdb_meal_cache_model.g.dart";
-
-@HiveType(typeId: 5)
 class MealDBMealCache extends HiveObject {
-  @HiveField(0)
   final String id;
 
-  @HiveField(1)
   final String name;
 
-  @HiveField(2)
   final String? category;
 
-  @HiveField(3)
   final String instructions;
 
-  @HiveField(4)
   final String thumbnailUrl;
 
-  @HiveField(5)
   final List<String?> ingredients;
 
-  @HiveField(6)
   final List<String?> measures;
 
-  @HiveField(7)
   final String? area;
 
-  @HiveField(8)
   final String? tags;
 
-  @HiveField(9)
   final String? youtubeUrl;
 
-  @HiveField(10)
   final String? source;
 
-  @HiveField(11)
   final DateTime cachedAt;
 
-  @HiveField(12)
   bool? containsHaramIngredients;
 
   MealDBMealCache({

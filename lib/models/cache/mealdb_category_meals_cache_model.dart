@@ -1,17 +1,11 @@
 import "package:hive_ce_flutter/hive_flutter.dart";
 import "package:khookbook/models/meals_list_model.dart";
 
-part "mealdb_category_meals_cache_model.g.dart";
-
-@HiveType(typeId: 3)
 class MealDBCategoryMealsCache extends HiveObject {
-  @HiveField(0)
   final String categoryId;
 
-  @HiveField(1)
   final List<MealDBCategoryMealData> meals;
 
-  @HiveField(2)
   final DateTime cachedAt;
 
   MealDBCategoryMealsCache({
@@ -41,15 +35,11 @@ class MealDBCategoryMealsCache extends HiveObject {
   }
 }
 
-@HiveType(typeId: 4)
 class MealDBCategoryMealData {
-  @HiveField(0)
   final String id;
 
-  @HiveField(1)
   final String name;
 
-  @HiveField(2)
   final String thumbnailUrl;
 
   MealDBCategoryMealData({

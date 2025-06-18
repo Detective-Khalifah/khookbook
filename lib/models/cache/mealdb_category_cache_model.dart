@@ -1,14 +1,9 @@
 import "package:hive_ce_flutter/hive_flutter.dart";
 import "package:khookbook/models/category_list_model.dart";
 
-part "mealdb_category_cache_model.g.dart";
-
-@HiveType(typeId: 1)
 class MealDBCategoryCache extends HiveObject {
-  @HiveField(0)
   final List<MealDBCategoryData> categories;
 
-  @HiveField(1)
   final DateTime cachedAt;
 
   MealDBCategoryCache({required this.categories, required this.cachedAt});
@@ -34,18 +29,11 @@ class MealDBCategoryCache extends HiveObject {
   }
 }
 
-@HiveType(typeId: 2)
 class MealDBCategoryData {
-  @HiveField(0)
   final String? id;
 
-  @HiveField(1)
   final String? category;
-
-  @HiveField(2)
   final String? thumbnail;
-
-  @HiveField(3)
   final String? description;
 
   MealDBCategoryData({

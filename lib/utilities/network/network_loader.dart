@@ -117,22 +117,49 @@ Future<NetworkResult<T>> fetchMealDBWithCache<T>({
   String? successMessage,
   String? loadingText,
 }) async {
-  final connectivityResult = await Connectivity().checkConnectivity();
+  // Try cache first regardless of connection status
+  try {
+    final cachedResult = await cacheLoader();
+    final cachedAt = DateTime.now(); // Get this from cache metadata
 
-  // Try cache first if offline
-  if (connectivityResult.contains(ConnectivityResult.none)) {
-    try {
-      final cachedResult = await cacheLoader();
-      if (cachedResult != null) {
-        final result = NetworkResult<T>.offline(cachedResult);
-        if (onComplete != null) onComplete(result);
-        return result;
+    if (cachedResult != null) {
+      final result = NetworkResult<T>.offline(cachedResult, cachedAt);
+
+      // Check connectivity only if cache is invalid
+      if (!result.isCacheValid) {
+        final connectivityResult = await Connectivity().checkConnectivity();
+        final isOffline = connectivityResult.contains(ConnectivityResult.none);
+
+        if (!isOffline) {
+          // Cache is invalid and we're online, refresh in background
+          loader()
+              .then((fresh) {
+                // Update cache with fresh data
+                if (onComplete != null) {
+                  onComplete(NetworkResult<T>.success(fresh));
+                }
+              })
+              .catchError((_) {
+                // Failed to refresh, keep using cache
+                if (onComplete != null) {
+                  onComplete(NetworkResult.offline(cachedResult));
+                  // onComplete(result); // similar to above
+                }
+              });
+        }
       }
-    } catch (e) {
-      debugPrint("Cache error: $e");
-    }
 
-    // Only show no internet message if we don"t have cached data
+      // Return cache immediately while refresh happens in background
+      return NetworkResult<T>.success(cachedResult);
+      // return result; same as above
+    }
+  } catch (e) {
+    debugPrint("Cache error: $e");
+  }
+
+  // No cache or cache error, check connectivity
+  final connectivityResult = await Connectivity().checkConnectivity();
+  if (connectivityResult.contains(ConnectivityResult.none)) {
     if (context.mounted) {
       ScaffoldMessenger.of(
         context,
@@ -143,34 +170,40 @@ Future<NetworkResult<T>> fetchMealDBWithCache<T>({
     );
   }
 
-  // Show loading dialog
+  // Show loading dialog for network request
   bool dialogShowing = true;
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator.adaptive(),
-            if (loadingText != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Text(
-                  loadingText,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-          ],
+  if (context.mounted) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Scaffold(
+        body: PopScope(
+          canPop: false,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator.adaptive(),
+                if (loadingText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Text(
+                      loadingText,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
-    ),
-  ).then((_) => dialogShowing = false);
+    ).then((_) => dialogShowing = false);
+  }
 
   try {
     final data = await loader();
-    if (dialogShowing) {
+
+    if (context.mounted && dialogShowing) {
       Navigator.of(context, rootNavigator: true).pop();
     }
 
@@ -186,18 +219,6 @@ Future<NetworkResult<T>> fetchMealDBWithCache<T>({
   } catch (error) {
     if (context.mounted && dialogShowing) {
       Navigator.of(context, rootNavigator: true).pop();
-    }
-
-    // Try cache as fallback on network error
-    try {
-      final cachedResult = await cacheLoader();
-      if (cachedResult != null) {
-        final result = NetworkResult<T>.offline(cachedResult);
-        if (onComplete != null) onComplete(result);
-        return result;
-      }
-    } catch (e) {
-      debugPrint("Cache error: $e");
     }
 
     if (context.mounted) {

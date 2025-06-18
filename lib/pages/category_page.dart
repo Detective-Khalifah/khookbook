@@ -7,6 +7,8 @@ import "package:khookbook/utilities/specific_category_args.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
 
+import 'package:khookbook/widgets/status_banner.dart';
+
 final _firestore = FirebaseFirestore.instance;
 late User signedInUser;
 
@@ -37,54 +39,73 @@ class CategoryPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Recipe Categories")),
-      body: RefreshIndicator.adaptive(
-        onRefresh: () => ref.refresh(categoriesProvider(context).future),
-        child: asyncCategories.when(
-          data: (categories) => Container(
-            color: Colors.orangeAccent.shade200,
-            child: GridView.builder(
-              padding: EdgeInsets.all(10.0),
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                // crossAxisCount: 2,
-                maxCrossAxisExtent: 200,
-                childAspectRatio: 3 / 4,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return CategoryCard(
-                  id: category.id,
-                  category: category.category,
-                  thumbnail: category.thumbnail,
-                  description: category.description,
-                  onPress: () {
-                    Navigator.pushNamed(
-                      context,
-                      SpecificCategoryPage.id,
-                      arguments: SpecificCategoryArguments(
-                        categories[index].category.toString(),
-                      ),
-                    );
-                  },
-                );
-              },
+      body: Column(
+        children: [
+          if (asyncCategories.isRefreshing)
+            const StatusBanner(
+              message: "Loading from cache. Refreshing in background...",
+              type: BannerType.info,
             ),
-          ),
-          loading: () => SizedBox.shrink(),
-          error: (e, st) => Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Error: $e"),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => ref.refresh(categoriesProvider(context)),
-                  child: const Text("Retry"),
+          if (asyncCategories.hasError)
+            StatusBanner(
+              message: "You're offline. Showing cached recipes.",
+              type: BannerType.warning,
+              actionLabel: "Retry",
+              onAction: () => ref.refresh(categoriesProvider(context)),
+            ),
+          Expanded(
+            child: RefreshIndicator.adaptive(
+              onRefresh: () => ref.refresh(categoriesProvider(context).future),
+              child: asyncCategories.when(
+                data: (categories) => Container(
+                  color: Colors.orangeAccent.shade200,
+                  child: GridView.builder(
+                    padding: EdgeInsets.all(10.0),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      // crossAxisCount: 2,
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 3 / 4,
+                    ),
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+                      return CategoryCard(
+                        id: category.id,
+                        category: category.category,
+                        thumbnail: category.thumbnail,
+                        description: category.description,
+                        onPress: () {
+                          Navigator.pushNamed(
+                            context,
+                            SpecificCategoryPage.id,
+                            arguments: SpecificCategoryArguments(
+                              categories[index].category.toString(),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ],
+                loading: () => SizedBox.shrink(),
+                error: (e, st) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Error: $e"),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () =>
+                            ref.refresh(categoriesProvider(context)),
+                        child: const Text("Retry"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -1,0 +1,19 @@
+targets:
+  $default:
+    builders:
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+            - unnecessary_const
+            - require_trailing_commas
+            - document_ignores
+            - public_member_api_docs
+      # hive_ce_generator|hive_schema_migrator:
+      #   enabled: true
+            #  options:
+               # Optional: If you want to use a custom prefix for generated files
+               # prefix: 'my_custom_prefix'
+            #  generate_for:
+            #    include:
+            #      - lib/**.dart
+                #  - test/**.dart # Add this if you have tests in the test folder.

@@ -49,14 +49,34 @@ class HalalVerificationService {
     "bone char", // used in some sugar processing methods
   ];
 
-  Future<bool> containsHaramIngredients(List<String> ingredients) {
-    return Future.value(
-      ingredients.any(
-        (i) => haramIngredients.any(
-          (h) => i.toLowerCase().contains(h.toLowerCase()),
-        ),
-      ),
+  static const List<String> suspectIngredients = [
+    "gelatin", // might be halal if specified
+    "rennet", // might be halal if specified
+    "enzymes", // need verification
+    "emulsifiers", // need verification
+    "shortening", // might contain lard
+    "vanilla extract", // might contain alcohol
+  ];
+
+  Future<bool> containsHaramIngredients(List<String> ingredients) async {
+    // Convert ingredients to lowercase for case-insensitive comparison
+    final lowerIngredients = ingredients.map((i) => i.toLowerCase()).toList();
+
+    // Check for direct matches with haram ingredients
+    final hasHaram = haramIngredients.any(
+      (h) => lowerIngredients.any((i) => i.contains(h.toLowerCase())),
     );
+
+    if (hasHaram) return true;
+
+    // Check for suspect ingredients that need verification
+    final hasSuspect = suspectIngredients.any(
+      (s) => lowerIngredients.any((i) => i.contains(s.toLowerCase())),
+    );
+
+    // For now, we'll treat suspect ingredients as potentially halal
+    // In a full implementation, these would require manual verification
+    return false;
   }
 
   Future<void> verifyRecipe({

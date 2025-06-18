@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:khookbook/providers/theme_provider.dart';
-import 'package:khookbook/providers/settings_provider.dart';
+import "package:flutter/material.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:khookbook/providers/theme_provider.dart";
+import "package:khookbook/providers/settings_provider.dart";
 
 class SettingsPage extends HookConsumerWidget {
   const SettingsPage({super.key});
@@ -13,12 +13,12 @@ class SettingsPage extends HookConsumerWidget {
     final settings = ref.watch(settingsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: const Text("Settings")),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
         child: ListView(
           children: [
-            _SectionHeader(title: 'Appearance'),
+            _SectionHeader(title: "Appearance"),
             SegmentedButton<ThemeMode>(
               segments: const [
                 ButtonSegment(
@@ -46,35 +46,45 @@ class SettingsPage extends HookConsumerWidget {
               emptySelectionAllowed: false,
               multiSelectionEnabled: false,
             ),
-            _SectionHeader(title: 'Notifications'),
+            _SectionHeader(title: "Food Preferences"),
             SwitchListTile(
-              title: const Text('Push Notifications'),
-              subtitle: const Text('Get recipe updates and recommendations'),
+              title: const Text("Halal Filter"),
+              subtitle: const Text(
+                "Hide recipes containing non-halal ingredients",
+              ),
+              value: settings.halalFilterEnabled,
+              onChanged: (value) =>
+                  ref.read(settingsProvider.notifier).toggleHalalFilter(value),
+            ),
+            _SectionHeader(title: "Notifications"),
+            SwitchListTile(
+              title: const Text("Push Notifications"),
+              subtitle: const Text("Get recipe updates and recommendations"),
               value: settings.notificationsEnabled,
               onChanged: (value) => ref
                   .read(settingsProvider.notifier)
                   .toggleNotifications(value),
             ),
-            _SectionHeader(title: 'App Settings'),
+            _SectionHeader(title: "App Settings"),
             ListTile(
-              title: const Text('Language'),
-              subtitle: const Text('English'),
+              title: const Text("Language"),
+              subtitle: const Text("English"),
               leading: const Icon(Icons.language),
               onTap: () {},
             ),
-            _SectionHeader(title: 'About'),
+            _SectionHeader(title: "About"),
             ListTile(
-              title: const Text('Version'),
-              subtitle: const Text('1.0.0'),
+              title: const Text("Version"),
+              subtitle: const Text("1.0.0"),
               leading: const Icon(Icons.info_outline),
             ),
             ListTile(
-              title: const Text('Terms of Service'),
+              title: const Text("Terms of Service"),
               leading: const Icon(Icons.description_outlined),
               onTap: () {},
             ),
             ListTile(
-              title: const Text('Privacy Policy'),
+              title: const Text("Privacy Policy"),
               leading: const Icon(Icons.privacy_tip_outlined),
               onTap: () {},
             ),
