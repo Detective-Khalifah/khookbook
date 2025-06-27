@@ -108,9 +108,12 @@ class MealDBRecipesRepository implements RecipesRepository {
     throw Exception(result.error);
   }
 
-  /// Helper method to check meals without throwing exceptions
-  /// Used to pre-filter meals that contain haram ingredients before displaying them
-  /// Returns null if the meal contains haram ingredients or if there's an error
+  /// Helper method to check meals without throwing exceptions.
+  /// Used to pre-filter meals that contain haram ingredients before displaying them.
+  /// Returns null if:
+  /// - The meal contains haram ingredients (when halal filter is enabled)
+  /// - There was an error fetching or processing the meal
+  /// - The API response was invalid
   Future<Meal?> fetchMealDetailWithoutException(
     BuildContext context,
     String id,
@@ -124,18 +127,20 @@ class MealDBRecipesRepository implements RecipesRepository {
 
       final meal = MealSpecs.fromJson(result.data!).meals.first;
 
-      // Check if halal filter is enabled in settings
+      // Check if halal filter is enabled in user settings
+      // Falls back to enabled (true) if settings can't be read
       final settings = _ref?.read(settingsProvider);
       if (settings?.halalFilterEnabled ?? true) {
-        // Check if meal contains haram ingredients before caching
+        // Only verify halal status if filter is enabled
         final containsHaram = await _verifier.containsHaramIngredients(
           meal.ingredients.where((i) => i != null).map((i) => i!).toList(),
         );
 
+        // Skip meals with haram ingredients when filter is on
         if (containsHaram) return null;
       }
 
-      // Cache the meal
+      // Cache the meal regardless of halal status
       await _mealBox.put(id, MealDBMealCache.fromMeal(meal));
       return meal;
     } catch (e) {
@@ -164,47 +169,30 @@ class MealDBRecipesRepository implements RecipesRepository {
 
         final mealsList = CategoryMealsList.fromJson(result.data!);
 
-        // Check if halal filter is enabled in settings
+        // Check if halal filter is enabled in user settings
+        // Falls back to enabled (true) if settings can't be read
         final settings = _ref?.read(settingsProvider);
         final isHalalFilterEnabled = settings?.halalFilterEnabled ?? true;
-        debugPrint("Halal filter enabled: $isHalalFilterEnabled");
 
-        // If halal filter is enabled, filter out meals with haram ingredients
         final filteredMeals = <CategoryMeals>[];
         for (final meal in mealsList.meals) {
           if (isHalalFilterEnabled) {
+            // When halal filter is on, verify each meal's ingredients
             final detailedMeal = await fetchMealDetailWithoutException(
               context,
               meal.id,
             );
-            if (detailedMeal != null && detailedMeal.ingredients.isNotEmpty) {
-              final ingredients = detailedMeal.ingredients
-                  .where((i) => i != null)
-                  .map((i) => i!)
-                  .toList();
-
-              _verifier.containsHaramIngredients(ingredients).then((
-                containsHaram,
-              ) {
-                if (!containsHaram) {
-                  filteredMeals.add(
-                    CategoryMeals(
-                      id: detailedMeal.id,
-                      name: detailedMeal.name,
-                      thumbnailUrl: detailedMeal.thumbnailUrl,
-                    ),
-                  );
-                }
-              });
-              // filteredMeals.add(meal);
+            if (detailedMeal != null) {
+              // Only include meals that passed halal verification
+              filteredMeals.add(meal);
             }
           } else {
-            // If halal filter is disabled, include all meals
+            // When halal filter is off, include all meals without checking
             filteredMeals.add(meal);
           }
         }
 
-        // Cache the results
+        // Cache the filtered results
         await _categoryMealsBox.put(
           cacheKey,
           MealDBCategoryMealsCache.fromCategoryMealsList(
@@ -231,6 +219,14 @@ class MealDBRecipesRepository implements RecipesRepository {
   /// this method throws an exception if the meal contains haram ingredients
   /// or if there's an error fetching the meal details, while the latter
   /// returns null in those cases.
+  ///
+  /// Unlike [fetchMealDetailWithoutException], this method:
+  /// - Throws an exception if the meal contains haram ingredients (when filter is enabled)
+  /// - Throws an exception if there's an error fetching the meal
+  /// - Throws an exception if the API response is invalid
+  ///
+  /// Use this method when you want to handle non-halal meals as errors.
+  /// Use [fetchMealDetailWithoutException] when you want to silently skip non-halal meals.
   @override
   Future<Meal> fetchMealById(BuildContext context, String id) async {
     final result = await fetchMealDBWithCache<Meal>(

@@ -1,3 +1,12 @@
+/// Widget that displays halal verification statistics in a user-friendly format.
+/// Shows total verifications, halal percentage, and pending reports if the user is an admin.
+///
+/// Statistics displayed:
+/// - Total number of verified recipes
+/// - Percentage of recipes verified as halal
+/// - Number of pending reports (admin-only)
+///
+/// The widget updates in real-time as the underlying statistics change in Firestore.
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:khookbook/providers/halal_stats_provider.dart";

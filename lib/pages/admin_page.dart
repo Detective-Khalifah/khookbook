@@ -1,3 +1,7 @@
+/// AdminPage provides a comprehensive dashboard interface for administrators to manage
+/// halal verifications and reports. It features a tabbed interface that separates
+/// pending reports from existing verifications, and integrates with Firebase
+/// Firestore for real-time updates.
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
@@ -5,7 +9,9 @@ import "package:khookbook/providers/halal_verification_provider.dart";
 import "package:khookbook/providers/admin_provider.dart";
 import "package:khookbook/widgets/status_banner.dart";
 
+/// The main admin dashboard page with real-time data synchronization
 class AdminPage extends ConsumerWidget {
+  /// Route identifier for navigation
   static const String id = "admin";
 
   const AdminPage({super.key});
@@ -70,6 +76,8 @@ class AdminPage extends ConsumerWidget {
   }
 }
 
+/// Tab for reviewing and managing pending halal verification reports
+/// Displays reports submitted by users about recipe halal status that need admin review.
 class _PendingReportsTab extends StatelessWidget {
   final HalalVerificationNotifier verificationProvider;
 
@@ -125,12 +133,15 @@ class _PendingReportsTab extends StatelessWidget {
     );
   }
 
+  /// Approves a halal verification report and updates its status in Firestore.
+  /// @param context BuildContext for showing feedback
+  /// @param reportId The Firestore document ID of the report
+  /// @param reportData The report data containing recipeId and other details
   Future<void> _approveReport(
     BuildContext context,
     String reportId,
     Map<String, dynamic> reportData,
   ) async {
-    // Update report status
     await FirebaseFirestore.instance
         .collection("halal_reports")
         .doc(reportId)
@@ -143,6 +154,9 @@ class _PendingReportsTab extends StatelessWidget {
     }
   }
 
+  /// Rejects a halal verification report and updates its status in Firestore.
+  /// @param context BuildContext for showing feedback
+  /// @param reportId The Firestore document ID of the report
   Future<void> _rejectReport(BuildContext context, String reportId) async {
     await FirebaseFirestore.instance
         .collection("halal_reports")
@@ -157,6 +171,9 @@ class _PendingReportsTab extends StatelessWidget {
   }
 }
 
+/// Tab for viewing and editing existing halal verifications
+/// Displays a list of all verified recipes with their current halal status,
+/// allowing admins to review and update verifications as needed.
 class _VerificationsTab extends StatelessWidget {
   final HalalVerificationNotifier verificationProvider;
 
@@ -212,6 +229,10 @@ class _VerificationsTab extends StatelessWidget {
     );
   }
 
+  /// Shows a dialog to edit an existing verification's status and notes.
+  /// @param context BuildContext for showing the dialog
+  /// @param verificationId The Firestore document ID of the verification
+  /// @param data The current verification data to pre-populate the form
   void _showEditDialog(
     BuildContext context,
     String verificationId,

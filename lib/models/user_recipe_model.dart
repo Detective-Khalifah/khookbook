@@ -1,6 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show Timestamp, DocumentSnapshot, SnapshotOptions;
 
+/// User-created recipe model with halal verification support.
+///
+/// This model represents recipes created by users, with additional fields
+/// for tracking halal verification status:
+/// - [verificationStatus]: Current verification state ('pending', 'halal', 'haram')
+/// - [isHalal]: Final verified halal status
+/// - [verifiedBy]: ID of the admin who performed verification
+/// - [verifiedAt]: Timestamp of verification
+///
+/// The model supports both Firestore serialization and deserialization.
 class UserRecipe {
   final String id;
   final String name, category, instructions, thumbnail;
